@@ -3,11 +3,13 @@
 Please provide the following details so I can configure Retrofit and port features to Cashwind Android.
 
 ## 1. API Base URL & Environment
+
 - [ ] **Base URL**: `https://api.example.com/` or environment-specific endpoints (dev/staging/prod)
 - [ ] **Protocol**: HTTP/HTTPS (port, if non-standard)
 - [ ] **API version** (if any): e.g., `/v1`, `/v2`
 
 ## 2. Authentication
+
 - [ ] **Auth method**: 
   - [ ] JWT (Bearer token)?
   - [ ] OAuth 2.0?
@@ -19,7 +21,9 @@ Please provide the following details so I can configure Retrofit and port featur
 - [ ] **Refresh mechanism**: Auto-refresh, manual, or header-based?
 
 ## 3. Core Features to Port (in priority order)
+
 List the main flows/screens from Prosper you want in Cashwind:
+
 1. [ ] **Example 1**: Login / Authentication
 2. [ ] **Example 2**: Dashboard / Home
 3. [ ] **Example 3**: Transactions / History
@@ -27,7 +31,9 @@ List the main flows/screens from Prosper you want in Cashwind:
 5. [ ] **Example 5**: Other critical feature
 
 ## 4. API Endpoints & Data Models
+
 For each feature above, provide:
+
 - **Endpoint path** (e.g., `GET /transactions`)
 - **HTTP method** (GET, POST, PUT, DELETE)
 - **Request body** (if applicable) — JSON example or schema
@@ -36,8 +42,9 @@ For each feature above, provide:
 - **Query parameters** (pagination, filters, sorting)
 - **Expected status codes** (200, 201, 400, 401, 404, 500, etc.)
 
-### Example format:
-```
+### Example format
+
+```text
 GET /user/profile
 - Auth: Required (Bearer token in Authorization header)
 - Response:
@@ -51,6 +58,7 @@ GET /user/profile
 ```
 
 ## 5. Special Requirements
+
 - [ ] **Headers**: Any custom headers needed (e.g., `X-API-Key`, `User-Agent`)?
 - [ ] **Timeouts**: Connection/read/write timeouts?
 - [ ] **Rate limiting**: Requests per minute/hour?
@@ -59,12 +67,14 @@ GET /user/profile
 - [ ] **CORS / SSL pinning**: Any certificate pinning needed?
 
 ## 6. Design & Branding
+
 - [ ] **Logo/icon**: PNG/SVG for app icon and splash
 - [ ] **Color scheme**: Primary, secondary, accent colors (hex or Material color names)
 - [ ] **Fonts**: Any custom fonts, or use Material Defaults?
 - [ ] **UI style**: Material Design 3, custom, other?
 
 ## 7. Backend Repo / Documentation
+
 - [ ] **Prosper repo/docs URL**: Can you share the Prosper repo or API docs link?
 - [ ] **OpenAPI/Swagger spec**: If available?
 - [ ] **Postman collection**: For testing endpoints?
@@ -72,6 +82,7 @@ GET /user/profile
 ---
 
 ## How to Share
+
 1. **Fill this checklist** and reply with your answers.
 2. **Attach JSON examples** or API docs if you have them.
 3. **Share the Prosper repo** or point me to the backend code.

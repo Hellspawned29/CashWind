@@ -4,11 +4,13 @@
 **Prosper** is a full-stack financial management app (Express + Prisma backend, React frontend).
 
 ### Base URL & Environment
+
 - **Default**: `http://127.0.0.1:4000` (local development)
 - **Production**: To be configured (set in `RetrofitProvider.kt`)
 - **Port**: `4000` (configurable via `PORT` env var)
 
 ### Authentication
+
 - **Method**: JWT Bearer Token (7-day expiry)
 - **Login Endpoint**: `POST /auth/register` and `POST /auth/login`
 - **Response**: `{ "token": "...", "user": { "id", "email", "name" } }`
@@ -19,10 +21,11 @@
 
 ## API Endpoints for Cashwind
 
-### Authentication
+### Authentication Endpoints
 
 #### Register
-```
+
+```http
 POST /auth/register
 Content-Type: application/json
 
@@ -45,7 +48,8 @@ Response (201):
 ```
 
 #### Login
-```
+
+```http
 POST /auth/login
 Content-Type: application/json
 
@@ -71,7 +75,8 @@ Response (200):
 ### Bills (Core Feature)
 
 #### List All Bills
-```
+
+```http
 GET /bills
 Authorization: Bearer <token>
 
@@ -95,7 +100,8 @@ Response (200):
 ```
 
 #### Create Bill
-```
+
+```http
 POST /bills
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -117,7 +123,8 @@ Response (201):
 ```
 
 #### Update Bill
-```
+
+```http
 PUT /bills/:id
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -133,7 +140,8 @@ Response (200):
 ```
 
 #### Delete Bill
-```
+
+```http
 DELETE /bills/:id
 Authorization: Bearer <token>
 
@@ -145,7 +153,8 @@ Response (204): No content
 ### Accounts
 
 #### List All Accounts
-```
+
+```http
 GET /accounts
 Authorization: Bearer <token>
 
@@ -168,7 +177,8 @@ Response (200):
 ```
 
 #### Create Account
-```
+
+```http
 POST /accounts
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -186,7 +196,8 @@ Response (201):
 ```
 
 #### Update Account
-```
+
+```http
 PUT /accounts/:id
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -201,7 +212,8 @@ Response (200):
 ```
 
 #### Delete Account
-```
+
+```http
 DELETE /accounts/:id
 Authorization: Bearer <token>
 
