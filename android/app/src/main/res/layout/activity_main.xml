@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📋 Bills"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp" />
+
+            <Button
+                android:id="@+id/addBillButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort:"
+            android:textSize="12sp"
+            android:layout_marginEnd="4dp" />
+
+        <Spinner
+            android:id="@+id/sortSpinner"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter:"
+            android:textSize="12sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="4dp" />
+
+        <Spinner
+            android:id="@+id/statusSpinner"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Totals row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:layout_marginTop="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total" android:textStyle="bold" />
+            <TextView android:id="@+id/totalCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="16sp" />
+            <TextView android:id="@+id/totalAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textSize="13sp" android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Paid" android:textStyle="bold" />
+            <TextView android:id="@+id/paidCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="16sp" />
+            <TextView android:id="@+id/paidAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textSize="13sp" android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unpaid" android:textStyle="bold" />
+            <TextView android:id="@+id/unpaidCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="16sp" />
+            <TextView android:id="@+id/unpaidAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textSize="13sp" android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Due 7d" android:textStyle="bold" />
+            <TextView android:id="@+id/dueWeekCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="16sp" />
+            <TextView android:id="@+id/dueWeekAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textSize="13sp" android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Due Mo" android:textStyle="bold" />
+            <TextView android:id="@+id/dueMonthCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="16sp" />
+            <TextView android:id="@+id/dueMonthAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$0.00" android:textSize="13sp" android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/billsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No bills yet. Tap + Add Bill to create one."
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <!-- Tips section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:padding="16dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📝 Tips"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="• Tap a bill to view details\n• Click status to mark as paid\n• Long press to delete\n• Filter and sort to organize your bills\n• Toggle paid/unpaid status for tracking"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp" />
+    </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

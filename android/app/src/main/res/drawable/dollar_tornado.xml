@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- White circular background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M100,100m-85,0a85,85 0,1 1,170 0a85,85 0,1 1,-170 0"/>
+    
+    <!-- Dollar Sign $ -->
+    <!-- Vertical line through $ -->
+    <path
+        android:pathData="M100,45 L100,155"
+        android:strokeWidth="8"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"/>
+    
+    <!-- Top curve of $ (S shape) -->
+    <path
+        android:pathData="M75,70 Q75,55 90,55 L110,55 Q125,55 125,70 Q125,85 110,85 L90,85"
+        android:strokeWidth="8"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Bottom curve of $ (S shape) -->
+    <path
+        android:pathData="M110,115 L90,115 Q75,115 75,130 Q75,145 90,145 L110,145 Q125,145 125,130"
+        android:strokeWidth="8"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Swirling motion lines around $ -->
+    <!-- Top left -->
+    <path
+        android:pathData="M40,60 Q50,45 70,50"
+        android:strokeWidth="5"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Top right -->
+    <path
+        android:pathData="M130,50 Q150,45 160,60"
+        android:strokeWidth="5"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Middle left -->
+    <path
+        android:pathData="M30,100 Q35,85 50,90"
+        android:strokeWidth="5"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Middle right -->
+    <path
+        android:pathData="M150,90 Q165,85 170,100"
+        android:strokeWidth="5"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Bottom left -->
+    <path
+        android:pathData="M40,140 Q50,155 70,150"
+        android:strokeWidth="5"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Bottom right -->
+    <path
+        android:pathData="M130,150 Q150,155 160,140"
+        android:strokeWidth="5"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+</vector>

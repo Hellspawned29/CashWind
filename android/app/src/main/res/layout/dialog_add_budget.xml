@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/budgetNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="e.g., Groceries"
+        android:inputType="text"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/budgetAmountInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="0.00"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/budgetCategoryInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="e.g., Food"
+        android:inputType="text"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Period"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
+
+    <Spinner
+        android:id="@+id/budgetPeriodSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/budget_periods" />
+</LinearLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:label="Cashwind"
+        android:icon="@mipmap/ic_launcher"
+        android:supportsRtl="true">
+        <activity
+            android:name="com.cashwind.app.DashboardActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Cashwind">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.cashwind.app.MainActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.BillDetailActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AddBillActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.LoginActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AccountsActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AddAccountActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.PaycheckActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AccountTransactionActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AddTransactionActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.EditTransactionActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.BudgetActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.GoalsActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AnalyticsActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.ExportActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+    </application>
+
+</manifest>

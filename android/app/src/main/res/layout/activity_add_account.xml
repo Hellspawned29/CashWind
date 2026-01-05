@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Account"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:layout_marginTop="12dp" />
+
+        <Spinner
+            android:id="@+id/typeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/accountNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="e.g., Main Checking"
+            android:inputType="textCapWords" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Balance"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/accountBalanceInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="0.00"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label (bank/card)"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/accountLabelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chase, Amex, etc."
+            android:inputType="textCapWords" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credit limit"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/creditLimitInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Optional"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interest rate (%)"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/interestRateInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Optional"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimum payment"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/minimumPaymentInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Optional"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Due day (1-31)"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/dueDayInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Optional"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+
+            <Button
+                android:id="@+id/saveAccountButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

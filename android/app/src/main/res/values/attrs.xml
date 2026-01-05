@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Semantic color attributes for dark mode support -->
+    <attr name="colorTextSecondary" format="color" />
+    <attr name="colorAccentText" format="color" />
+    <attr name="colorDanger" format="color" />
+    <attr name="colorBackground" format="color" />
+    <attr name="colorSurface" format="color" />
+</resources>

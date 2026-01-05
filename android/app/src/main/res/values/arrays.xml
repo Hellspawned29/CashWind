@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_options">
+        <item>Due date</item>
+        <item>Amount (desc)</item>
+        <item>Name</item>
+    </string-array>
+
+    <string-array name="status_filters">
+        <item>All</item>
+        <item>Paid</item>
+        <item>Unpaid</item>
+    </string-array>
+
+    <string-array name="recurrence_frequency">
+        <item>weekly</item>
+        <item>biweekly</item>
+        <item>monthly</item>
+        <item>bimonthly</item>
+        <item>quarterly</item>
+        <item>yearly</item>
+    </string-array>
+
+    <string-array name="account_types">
+        <item>Checking</item>
+        <item>Savings</item>
+        <item>Credit Card</item>
+        <item>Cash</item>
+        <item>Loan</item>
+        <item>Investment</item>
+    </string-array>
+
+    <string-array name="account_filter_types">
+        <item>All</item>
+        <item>Checking</item>
+        <item>Savings</item>
+        <item>Credit Card</item>
+        <item>Cash</item>
+        <item>Loan</item>
+        <item>Investment</item>
+    </string-array>
+
+    <string-array name="paycheck_frequencies">
+        <item>Weekly</item>
+        <item>Biweekly</item>
+        <item>Semi-monthly (twice a month)</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string-array name="transaction_types">
+        <item>Income</item>
+        <item>Expense</item>
+    </string-array>
+
+    <string-array name="budget_periods">
+        <item>weekly</item>
+        <item>monthly</item>
+        <item>yearly</item>
+    </string-array>
+
+    <string-array name="reminder_days">
+        <item>0 (Day of)</item>
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="bill_categories">
+        <item>Utilities</item>
+        <item>Internet/Phone</item>
+        <item>Insurance</item>
+        <item>Rent/Mortgage</item>
+        <item>Car Payment</item>
+        <item>Gas/Fuel</item>
+        <item>Subscription</item>
+        <item>Water/Sewer</item>
+        <item>Electricity</item>
+        <item>Gas</item>
+        <item>Healthcare</item>
+        <item>Childcare</item>
+        <item>Pet Care</item>
+        <item>Gym</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="income_categories">
+        <item>Salary</item>
+        <item>Bonus</item>
+        <item>Freelance</item>
+        <item>Investment</item>
+        <item>Refund</item>
+        <item>Gift</item>
+        <item>Other Income</item>
+    </string-array>
+
+    <string-array name="expense_categories">
+        <item>Food &amp; Dining</item>
+        <item>Transportation</item>
+        <item>Shopping</item>
+        <item>Entertainment</item>
+        <item>Healthcare</item>
+        <item>Utilities</item>
+        <item>Personal Care</item>
+        <item>Education</item>
+        <item>Travel</item>
+        <item>Other Expense</item>
+    </string-array>
+</resources>

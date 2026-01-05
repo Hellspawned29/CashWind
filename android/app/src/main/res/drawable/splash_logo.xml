@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Circle background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,60m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0"/>
+    
+    <!-- Dollar sign -->
+    <path
+        android:fillColor="@color/purple_500"
+        android:pathData="M60,30 L60,90 M45,40 Q45,35 50,35 L70,35 Q75,35 75,40 Q75,45 70,45 L50,45 M45,50 L75,50 M45,55 L70,55 Q75,55 75,60 Q75,65 70,65 L50,65 Q45,65 45,70 Q45,75 50,75 L70,75 Q75,75 75,80"
+        android:strokeWidth="4"
+        android:strokeColor="@color/purple_500"
+        android:strokeLineCap="round"/>
+</vector>
