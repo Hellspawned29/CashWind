@@ -113,7 +113,11 @@ class MainViewModel(private val database: CashwindDatabase) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val billEntity = bill.toEntity()
             val newIsPaid = !bill.isPaid
-            val updatedBill = billEntity.copy(isPaid = newIsPaid)
+            val nowStr = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Calendar.getInstance().time)
+            val updatedBill = billEntity.copy(
+                isPaid = newIsPaid,
+                lastPaidAt = if (newIsPaid) nowStr else billEntity.lastPaidAt
+            )
             billDao.updateBill(updatedBill)
             
             // Create transaction when bill is marked as paid
@@ -150,6 +154,7 @@ class MainViewModel(private val database: CashwindDatabase) : ViewModel() {
             amount = amount,
             dueDate = dueDate,
             isPaid = isPaid,
+            lastPaidAt = lastPaidAt,
             category = category,
             recurring = recurring,
             frequency = frequency,
@@ -168,6 +173,7 @@ class MainViewModel(private val database: CashwindDatabase) : ViewModel() {
             amount = amount,
             dueDate = dueDate,
             isPaid = isPaid,
+            lastPaidAt = lastPaidAt,
             category = category,
             recurring = recurring,
             frequency = frequency,

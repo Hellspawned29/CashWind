@@ -14,7 +14,13 @@ class BillDetailViewModel(private val database: CashwindDatabase) : ViewModel() 
 
     fun togglePaid(bill: Bill, onDone: (Bill) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val updated = bill.copy(isPaid = !bill.isPaid)
+            val newIsPaid = !bill.isPaid
+            val nowStr = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US)
+                .format(java.util.Calendar.getInstance().time)
+            val updated = bill.copy(
+                isPaid = newIsPaid,
+                lastPaidAt = if (newIsPaid) nowStr else bill.lastPaidAt
+            )
             billDao.updateBill(updated.toEntity())
             withContext(Dispatchers.Main) { onDone(updated) }
         }
@@ -35,6 +41,7 @@ class BillDetailViewModel(private val database: CashwindDatabase) : ViewModel() 
             amount = amount,
             dueDate = dueDate,
             isPaid = isPaid,
+            lastPaidAt = lastPaidAt,
             category = category,
             recurring = recurring,
             frequency = frequency,

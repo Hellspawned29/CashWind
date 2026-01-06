@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                     putExtra("notes", bill.notes)
                     putExtra("webLink", bill.webLink)
                     putExtra("isPaid", bill.isPaid)
+                    putExtra("lastPaidAt", bill.lastPaidAt)
                     putExtra("recurring", bill.recurring)
                     putExtra("frequency", bill.frequency)
                 }

@@ -356,6 +356,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
         amount = amount,
         dueDate = dueDate,
         isPaid = isPaid,
+        lastPaidAt = lastPaidAt,
         category = category,
         recurring = recurring,
         frequency = frequency,

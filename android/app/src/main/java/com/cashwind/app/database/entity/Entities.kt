@@ -21,6 +21,7 @@ data class BillEntity(
     val amount: Double,
     val dueDate: String,
     val isPaid: Boolean = false,
+    val lastPaidAt: String? = null,
     val category: String? = null,
     val recurring: Boolean = false,
     val frequency: String? = null,

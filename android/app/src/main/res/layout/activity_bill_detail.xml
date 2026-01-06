@@ -38,6 +38,15 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
+            android:id="@+id/billLastPaid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
             android:id="@+id/billDue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
