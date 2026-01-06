@@ -20,7 +20,7 @@ import com.cashwind.app.database.dao.*
         PaycheckSettingsEntity::class,
         BillReminderEntity::class
     ],
-    version = 7
+    version = 8
 )
 abstract class CashwindDatabase : RoomDatabase() {
     abstract fun billDao(): BillDao
@@ -45,6 +45,14 @@ abstract class CashwindDatabase : RoomDatabase() {
             }
         }
 
+        // Migration from version 7 to 8 - adds lastPaidAt to bills
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add lastPaidAt column to bills table
+                database.execSQL("ALTER TABLE bills ADD COLUMN lastPaidAt TEXT")
+            }
+        }
+
         fun getInstance(context: Context): CashwindDatabase {
             return instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -52,7 +60,7 @@ abstract class CashwindDatabase : RoomDatabase() {
                     CashwindDatabase::class.java,
                     "cashwind_db"
                 )
-                    .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_6_7, MIGRATION_7_8)
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { instance = it }
