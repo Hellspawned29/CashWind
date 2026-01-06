@@ -65,7 +65,15 @@
             android:theme="@style/Theme.Cashwind"
             android:exported="false" />
         <activity
+            android:name="com.cashwind.app.AddBudgetActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
             android:name="com.cashwind.app.GoalsActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
+            android:name="com.cashwind.app.AddGoalActivity"
             android:theme="@style/Theme.Cashwind"
             android:exported="false" />
         <activity

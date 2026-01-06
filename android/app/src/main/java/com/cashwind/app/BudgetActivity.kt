@@ -1,14 +1,13 @@
 package com.cashwind.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.ui.BudgetViewModel
@@ -51,40 +50,11 @@ class BudgetActivity : AppCompatActivity() {
             budgetListView.adapter = adapter
         }
 
-        addBudgetButton.setOnClickListener { showAddBudgetDialog() }
+        addBudgetButton.setOnClickListener {
+            val intent = Intent(this, AddBudgetActivity::class.java)
+            startActivity(intent)
+        }
         backButton.setOnClickListener { finish() }
-    }
-
-    private fun showAddBudgetDialog() {
-        val builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(R.layout.dialog_add_budget, null)
-
-        val nameInput = view.findViewById<EditText>(R.id.budgetNameInput)
-        val amountInput = view.findViewById<EditText>(R.id.budgetAmountInput)
-        val categoryInput = view.findViewById<EditText>(R.id.budgetCategoryInput)
-        val periodSpinner = view.findViewById<android.widget.Spinner>(R.id.budgetPeriodSpinner)
-
-        builder.setView(view)
-            .setTitle("Add Budget")
-            .setPositiveButton("Add") { _, _ ->
-                val name = nameInput.text.toString().ifBlank { "Budget" }
-                val amount = amountInput.text.toString().toDoubleOrNull() ?: 0.0
-                val category = categoryInput.text.toString().ifBlank { "General" }
-                val period = when (periodSpinner.selectedItemPosition) {
-                    0 -> "weekly"
-                    1 -> "monthly"
-                    else -> "yearly"
-                }
-
-                if (amount > 0) {
-                    viewModel.addBudget(name, amount, period, category)
-                    Snackbar.make(findViewById(android.R.id.content), "Budget created!", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(findViewById(android.R.id.content), "Please enter a valid amount", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 }
 

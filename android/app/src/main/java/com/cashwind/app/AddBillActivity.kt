@@ -85,7 +85,7 @@ class AddBillActivity : AppCompatActivity() {
 
         if (editingBillId != 0) {
             binding.titleText.text = "Edit Bill"
-            binding.saveBillButton.text = "Save Changes"
+            binding.saveBillButton.text = "SAVE"
             binding.nameInput.setText(existingName ?: "")
             binding.amountInput.setText(if (existingAmount == 0.0) "" else existingAmount.toString())
             binding.dueDateInput.setText(existingDueDate ?: "")
@@ -103,7 +103,7 @@ class AddBillActivity : AppCompatActivity() {
             }
         } else {
             binding.titleText.text = "Add Bill"
-            binding.saveBillButton.text = "Save Bill"
+            binding.saveBillButton.text = "SAVE"
             val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Calendar.getInstance().time)
             binding.dueDateInput.setText(today)
             binding.recurringSwitch.isChecked = false

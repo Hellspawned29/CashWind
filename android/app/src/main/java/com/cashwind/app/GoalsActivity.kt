@@ -1,5 +1,6 @@
 package com.cashwind.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -13,9 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.GoalEntity
 import com.cashwind.app.ui.GoalsViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class GoalsActivity : AppCompatActivity() {
     private val viewModel: GoalsViewModel by viewModels {
@@ -60,45 +58,11 @@ class GoalsActivity : AppCompatActivity() {
             goalsListView.adapter = adapter
         }
 
-        addGoalButton.setOnClickListener { showAddGoalDialog() }
+        addGoalButton.setOnClickListener {
+            val intent = Intent(this, AddGoalActivity::class.java)
+            startActivity(intent)
+        }
         backButton.setOnClickListener { finish() }
-    }
-
-    private fun showAddGoalDialog() {
-        val builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(R.layout.dialog_add_goal, null)
-
-        val nameInput = view.findViewById<EditText>(R.id.goalNameInput)
-        val targetAmountInput = view.findViewById<EditText>(R.id.goalTargetAmountInput)
-        val targetDateInput = view.findViewById<EditText>(R.id.goalTargetDateInput)
-        val monthlyInput = view.findViewById<EditText>(R.id.goalMonthlyInput)
-        val categoryInput = view.findViewById<EditText>(R.id.goalCategoryInput)
-        val notesInput = view.findViewById<EditText>(R.id.goalNotesInput)
-
-        val defaultDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(
-            Calendar.getInstance().apply { add(Calendar.YEAR, 1) }.time
-        )
-        targetDateInput.setText(defaultDate)
-
-        builder.setView(view)
-            .setTitle("Add Goal")
-            .setPositiveButton("Add") { _, _ ->
-                val name = nameInput.text.toString().ifBlank { "New Goal" }
-                val targetAmount = targetAmountInput.text.toString().toDoubleOrNull() ?: 0.0
-                val targetDate = targetDateInput.text.toString()
-                val monthly = monthlyInput.text.toString().toDoubleOrNull()
-                val category = categoryInput.text.toString().takeIf { it.isNotBlank() }
-                val notes = notesInput.text.toString().takeIf { it.isNotBlank() }
-
-                if (targetAmount > 0) {
-                    viewModel.addGoal(name, "savings", targetAmount, targetDate, monthly, category, notes)
-                    Snackbar.make(findViewById(android.R.id.content), "Goal created!", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(findViewById(android.R.id.content), "Please enter a target amount", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 
     private fun showAddFundsDialog(goal: GoalEntity) {
