@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.ui.AccountTransactionViewModel
@@ -93,10 +94,10 @@ class AddTransactionActivity : AppCompatActivity() {
 
             if (amount > 0 && selectedDate.isNotBlank()) {
                 viewModel.addTransaction(amount, type, category, description, selectedDate, isRecurring, frequency)
-                Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Transaction added!", Snackbar.LENGTH_SHORT).show()
                 finish()
             } else {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Please fill in all fields", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -117,3 +118,5 @@ class AddTransactionActivity : AppCompatActivity() {
         }
     }
 }
+
+

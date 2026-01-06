@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.Toast
+
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.GoalEntity
@@ -88,9 +89,9 @@ class GoalsActivity : AppCompatActivity() {
 
                 if (targetAmount > 0) {
                     viewModel.addGoal(name, "savings", targetAmount, targetDate, monthly, category, notes)
-                    Toast.makeText(this, "Goal created!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Goal created!", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Please enter a target amount", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Please enter a target amount", Snackbar.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -110,10 +111,12 @@ class GoalsActivity : AppCompatActivity() {
                 val amount = input.text.toString().toDoubleOrNull() ?: 0.0
                 if (amount > 0) {
                     viewModel.updateProgress(goal, amount)
-                    Toast.makeText(this, "Added $${String.format("%.2f", amount)}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Added $${String.format("%.2f", amount)}", Snackbar.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
 }
+
+

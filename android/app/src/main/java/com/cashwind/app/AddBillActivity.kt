@@ -2,10 +2,10 @@ package com.cashwind.app
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.Toast
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddBillBinding
 import com.cashwind.app.ui.AddBillViewModel
 import com.cashwind.app.database.CashwindDatabase
@@ -166,24 +166,24 @@ class AddBillActivity : AppCompatActivity() {
 
         // Validation
         if (name.isEmpty()) {
-            Toast.makeText(this, "Bill name required", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Bill name required", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         if (amountStr.isEmpty()) {
-            Toast.makeText(this, "Amount required", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Amount required", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         if (dueDate.isEmpty()) {
-            Toast.makeText(this, "Due date required", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Due date required", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val amount = try {
             amountStr.toDouble()
         } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Invalid amount", Snackbar.LENGTH_SHORT).show()
             return
         }
 
@@ -213,7 +213,7 @@ class AddBillActivity : AppCompatActivity() {
 
         val message = if (editingBillId == 0) "Bill added!" else "Bill updated!"
         viewModel.saveOrUpdate(bill)
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
         finish()
     }
 }

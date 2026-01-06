@@ -3,7 +3,8 @@ package com.cashwind.app
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
+
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cashwind.app.database.CashwindDatabase
@@ -59,12 +60,12 @@ class ExportActivity : AppCompatActivity() {
                 val file = CsvExportUtil.exportBillsToCSV(this@ExportActivity, bills)
                 if (file != null) {
                     shareFile(file, "Bills Export")
-                    Toast.makeText(this@ExportActivity, "Bills exported successfully", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Bills exported successfully", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ExportActivity, "Error exporting bills", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error exporting bills", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@ExportActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -78,12 +79,12 @@ class ExportActivity : AppCompatActivity() {
                 val file = CsvExportUtil.exportAccountsToCSV(this@ExportActivity, accounts)
                 if (file != null) {
                     shareFile(file, "Accounts Export")
-                    Toast.makeText(this@ExportActivity, "Accounts exported successfully", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Accounts exported successfully", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ExportActivity, "Error exporting accounts", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error exporting accounts", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@ExportActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -97,12 +98,12 @@ class ExportActivity : AppCompatActivity() {
                 val file = CsvExportUtil.exportTransactionsToCSV(this@ExportActivity, transactions)
                 if (file != null) {
                     shareFile(file, "Transactions Export")
-                    Toast.makeText(this@ExportActivity, "Transactions exported successfully", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Transactions exported successfully", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ExportActivity, "Error exporting transactions", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error exporting transactions", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@ExportActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -125,12 +126,12 @@ class ExportActivity : AppCompatActivity() {
                 val transactionFile = CsvExportUtil.exportTransactionsToCSV(this@ExportActivity, transactions)
                 
                 if (billFile != null && accountFile != null && transactionFile != null) {
-                    Toast.makeText(this@ExportActivity, "All data exported successfully", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "All data exported successfully", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@ExportActivity, "Error exporting some data", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error exporting some data", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@ExportActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -150,3 +151,5 @@ class ExportActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, "Share $title"))
     }
 }
+
+

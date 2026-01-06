@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.Toast
+
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.ui.BudgetViewModel
@@ -74,12 +75,14 @@ class BudgetActivity : AppCompatActivity() {
 
                 if (amount > 0) {
                     viewModel.addBudget(name, amount, period, category)
-                    Toast.makeText(this, "Budget created!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Budget created!", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Please enter a valid amount", Snackbar.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
 }
+
+

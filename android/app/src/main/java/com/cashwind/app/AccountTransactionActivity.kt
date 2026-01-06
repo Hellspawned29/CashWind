@@ -8,11 +8,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.TransactionEntity
 import com.cashwind.app.ui.AccountTransactionViewModel
@@ -64,7 +64,7 @@ class AccountTransactionActivity : AppCompatActivity() {
                 { transaction ->
                     // Delete directly without dialog
                     viewModel.deleteTransaction(transaction)
-                    Toast.makeText(this, "Transaction deleted", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Transaction deleted", Snackbar.LENGTH_SHORT).show()
                 },
                 { transaction ->
                     // Launch edit activity
@@ -99,7 +99,7 @@ class AccountTransactionActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setMessage("TEST - Does this dialog show?")
             .setPositiveButton("Yes") { _, _ ->
-                Toast.makeText(this, "Dialog worked!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Dialog worked!", Snackbar.LENGTH_SHORT).show()
             }
             .setNegativeButton("No", null)
             .show()
@@ -164,9 +164,9 @@ class AccountTransactionActivity : AppCompatActivity() {
 
                 if (amount > 0 && selectedDate.isNotBlank()) {
                     viewModel.addTransaction(amount, type, category, description, selectedDate, isRecurring, frequency)
-                    Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Transaction added!", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Please fill in all fields", Snackbar.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -176,10 +176,10 @@ class AccountTransactionActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.WHITE))
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         Log.d("AccountTransactionActivity", "Add dialog shown")
-        Toast.makeText(this, "Add dialog is open", Toast.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(android.R.id.content), "Add dialog is open", Snackbar.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e("AccountTransactionActivity", "Error showing add dialog", e)
-            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            Snackbar.make(findViewById(android.R.id.content), "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -285,9 +285,9 @@ class AccountTransactionActivity : AppCompatActivity() {
                         isRecurring,
                         frequency
                     )
-                    Toast.makeText(this, "Transaction updated!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Transaction updated!", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Please fill in all fields", Snackbar.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -297,12 +297,14 @@ class AccountTransactionActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.WHITE))
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         Log.d("AccountTransactionActivity", "Edit dialog shown")
-        Toast.makeText(this, "Edit dialog is open", Toast.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(android.R.id.content), "Edit dialog is open", Snackbar.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Log.e("AccountTransactionActivity", "Error showing edit dialog", e)
-            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            Snackbar.make(findViewById(android.R.id.content), "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
         }
     }
 
     private fun formatCurrency(value: Double): String = "$${String.format("%.2f", value)}"
 }
+
+

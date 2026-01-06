@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityBillDetailBinding
 import com.cashwind.app.ui.BillDetailViewModel
 import com.cashwind.app.database.CashwindDatabase
@@ -45,6 +45,7 @@ class BillDetailActivity : AppCompatActivity() {
             amount = intent.getDoubleExtra("amount", 0.0),
             dueDate = intent.getStringExtra("dueDate") ?: "",
             isPaid = intent.getBooleanExtra("isPaid", false),
+            lastPaidAt = intent.getStringExtra("lastPaidAt"),
             category = intent.getStringExtra("category"),
             recurring = intent.getBooleanExtra("recurring", false),
             frequency = intent.getStringExtra("frequency"),
@@ -77,13 +78,13 @@ class BillDetailActivity : AppCompatActivity() {
             viewModel.togglePaid(bill) {
                 bill = it
                 bindBill()
-                Toast.makeText(this, if (bill.isPaid) "Marked paid" else "Marked unpaid", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, if (bill.isPaid) "Marked paid" else "Marked unpaid", Snackbar.LENGTH_SHORT).show()
             }
         }
 
         binding.deleteButton.setOnClickListener {
             viewModel.delete(bill) {
-                Toast.makeText(this, "Bill deleted", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "Bill deleted", Snackbar.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -98,7 +99,7 @@ class BillDetailActivity : AppCompatActivity() {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
                     } catch (e: Exception) {
-                        Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Invalid URL", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -161,7 +162,7 @@ class BillDetailActivity : AppCompatActivity() {
                 currentReminder = updated
             }
             runOnUiThread {
-                Toast.makeText(this@BillDetailActivity, "Reminder saved!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "Reminder saved!", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -171,6 +172,7 @@ class BillDetailActivity : AppCompatActivity() {
         binding.billAmount.text = "$${String.format("%.2f", bill.amount)}"
         binding.billDue.text = bill.dueDate
         binding.billStatus.text = if (bill.isPaid) "Paid" else "Unpaid"
+        binding.billLastPaid.text = bill.lastPaidAt?.let { "Last paid: $it" } ?: ""
         binding.billCategory.text = bill.category ?: "General"
         binding.billNotes.text = bill.notes ?: "No notes"
         binding.togglePaidButton.text = if (bill.isPaid) "Mark Unpaid" else "Mark Paid"

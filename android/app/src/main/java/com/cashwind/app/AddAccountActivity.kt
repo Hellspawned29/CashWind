@@ -2,9 +2,9 @@ package com.cashwind.app
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.AccountEntity
 import com.cashwind.app.databinding.ActivityAddAccountBinding
@@ -82,23 +82,23 @@ class AddAccountActivity : AppCompatActivity() {
         val dueDayStr = binding.dueDayInput.text.toString().trim()
 
         if (name.isEmpty()) {
-            Toast.makeText(this, "Account name required", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Account name required", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         if (type.isEmpty()) {
-            Toast.makeText(this, "Account type required", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Account type required", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         if (balanceStr.isEmpty()) {
-            Toast.makeText(this, "Balance required", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Balance required", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val balance = balanceStr.toDoubleOrNull()
         if (balance == null) {
-            Toast.makeText(this, "Invalid balance", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Invalid balance", Snackbar.LENGTH_SHORT).show()
             return
         }
 
@@ -121,7 +121,7 @@ class AddAccountActivity : AppCompatActivity() {
         )
 
         viewModel.saveOrUpdate(account)
-        Toast.makeText(this, if (editingAccountId == 0) "Account added" else "Account updated", Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, if (editingAccountId == 0) "Account added" else "Account updated", Snackbar.LENGTH_SHORT).show()
         finish()
     }
 }
