@@ -29,7 +29,7 @@ class PaycheckActivity : AppCompatActivity() {
         val allocationPercentage = findViewById<android.widget.TextView>(R.id.allocationPercentage)
         val remainingAfterBills = findViewById<android.widget.TextView>(R.id.remainingAfterBills)
         val monthlyBillsPerPaycheck = findViewById<android.widget.TextView>(R.id.monthlyBillsPerPaycheck)
-        val editIncomeButton = findViewById<android.widget.Button>(R.id.editIncomeButton)
+        val editIncomeButton = findViewById<com.google.android.material.button.MaterialButton>(R.id.editIncomeButton)
         val backButton = findViewById<android.widget.Button>(R.id.backButton)
 
         // Observe monthly bills per paycheck

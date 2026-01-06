@@ -133,7 +133,7 @@ class EditTransactionActivity : AppCompatActivity() {
         }
 
         val saveButton = findViewById<Button>(R.id.saveButton)
-        val deleteButton = findViewById<Button>(R.id.deleteButton)
+        val deleteButton = findViewById<com.google.android.material.button.MaterialButton>(R.id.deleteButton)
         val cancelButton = findViewById<Button>(R.id.cancelButton)
 
         saveButton.setOnClickListener {

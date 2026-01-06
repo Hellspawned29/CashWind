@@ -208,11 +208,10 @@
             <Button
                 android:id="@+id/deleteButton"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Delete"
-                android:layout_marginEnd="8dp"
-                android:background="?attr/colorDanger" />
+                android:layout_marginEnd="8dp" />
         </LinearLayout>
 
     </LinearLayout>

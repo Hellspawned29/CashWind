@@ -222,17 +222,15 @@
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="120dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:text="Cancel"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/saveBillButton"
                 android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:text="Save Bill"
-                android:background="@color/purple_500" />
+                android:layout_height="wrap_content"
+                android:text="Save Bill" />
 
         </LinearLayout>
 

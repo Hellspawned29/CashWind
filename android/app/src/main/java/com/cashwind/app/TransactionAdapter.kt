@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.TextView
 import com.cashwind.app.database.entity.TransactionEntity
 
@@ -25,8 +25,8 @@ class TransactionAdapter(
         val descView = view.findViewById<TextView>(R.id.transactionDescription)
         val categoryView = view.findViewById<TextView>(R.id.transactionCategory)
         val amountView = view.findViewById<TextView>(R.id.transactionAmount)
-        val deleteBtn = view.findViewById<ImageButton>(R.id.deleteTransactionBtn)
-        val editBtn = view.findViewById<ImageButton>(R.id.editTransactionBtn)
+        val deleteBtn = view.findViewById<Button>(R.id.deleteTransactionBtn)
+        val editBtn = view.findViewById<Button>(R.id.editTransactionBtn)
 
         dateView.text = transaction.date
         descView.text = transaction.description ?: "No description"
