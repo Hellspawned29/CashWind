@@ -49,6 +49,17 @@
         android:dividerHeight="1dp"
         android:layout_marginTop="12dp" />
 
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No savings goals yet.\n\nTap + Add to set your first goal and start saving!"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="32dp"
+        android:visibility="gone" />
+
     <!-- Tips section -->
     <LinearLayout
         android:layout_width="match_parent"

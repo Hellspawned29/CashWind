@@ -1,10 +1,11 @@
 package com.cashwind.app
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
@@ -38,8 +39,10 @@ class GoalsActivity : AppCompatActivity() {
         goalsListView = findViewById(R.id.goalsListView)
         addGoalButton = findViewById(R.id.addGoalButton)
         backButton = findViewById(R.id.backButton)
+        val emptyText = findViewById<TextView>(R.id.emptyText)
 
         viewModel.goals.observe(this) { goals ->
+            emptyText.visibility = if (goals.isEmpty()) View.VISIBLE else View.GONE
             val adapter = GoalsAdapter(
                 this,
                 goals.toMutableList(),

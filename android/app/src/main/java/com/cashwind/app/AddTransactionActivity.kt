@@ -82,9 +82,9 @@ class AddTransactionActivity : AppCompatActivity() {
         val cancelButton = findViewById<Button>(R.id.cancelButton)
 
         addButton.setOnClickListener {
-            val amount = amountInput.text.toString().toDoubleOrNull() ?: 0.0
+            val description = descriptionInput.text.toString().trim()
+            val amount = amountInput.text.toString().toDoubleOrNull()
             val category = categorySpinner.selectedItem?.toString() ?: "Uncategorized"
-            val description = descriptionInput.text.toString()
             val type = when (typeSpinner.selectedItemPosition) {
                 0 -> "income"
                 else -> "expense"
@@ -92,13 +92,29 @@ class AddTransactionActivity : AppCompatActivity() {
             val isRecurring = recurringCheckbox.isChecked
             val frequency = if (isRecurring) frequencySpinner.selectedItem?.toString() else null
 
-            if (amount > 0 && selectedDate.isNotBlank()) {
-                viewModel.addTransaction(amount, type, category, description, selectedDate, isRecurring, frequency)
-                Snackbar.make(findViewById(android.R.id.content), "Transaction added!", Snackbar.LENGTH_SHORT).show()
-                finish()
-            } else {
-                Snackbar.make(findViewById(android.R.id.content), "Please fill in all fields", Snackbar.LENGTH_SHORT).show()
+            if (description.isEmpty()) {
+                Snackbar.make(findViewById(android.R.id.content), "Description required", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            if (amount == null) {
+                Snackbar.make(findViewById(android.R.id.content), "Invalid amount", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (amount <= 0) {
+                Snackbar.make(findViewById(android.R.id.content), "Amount must be greater than 0", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (selectedDate.isBlank()) {
+                Snackbar.make(findViewById(android.R.id.content), "Date required", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            viewModel.addTransaction(amount, type, category, description, selectedDate, isRecurring, frequency)
+            Snackbar.make(findViewById(android.R.id.content), "Transaction added!", Snackbar.LENGTH_SHORT).show()
+            finish()
         }
 
         cancelButton.setOnClickListener { finish() }

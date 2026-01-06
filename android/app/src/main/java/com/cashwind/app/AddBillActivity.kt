@@ -180,10 +180,25 @@ class AddBillActivity : AppCompatActivity() {
             return
         }
 
+        // Validate date format
+        try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            sdf.isLenient = false
+            sdf.parse(dueDate)
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "Invalid date format (yyyy-MM-dd)", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
         val amount = try {
             amountStr.toDouble()
         } catch (e: NumberFormatException) {
             Snackbar.make(binding.root, "Invalid amount", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        if (amount <= 0) {
+            Snackbar.make(binding.root, "Amount must be greater than 0", Snackbar.LENGTH_SHORT).show()
             return
         }
 

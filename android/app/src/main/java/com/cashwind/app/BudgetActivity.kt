@@ -1,10 +1,11 @@
 package com.cashwind.app
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
@@ -34,8 +35,10 @@ class BudgetActivity : AppCompatActivity() {
         budgetListView = findViewById(R.id.budgetListView)
         addBudgetButton = findViewById(R.id.addBudgetButton)
         backButton = findViewById(R.id.backButton)
+        val emptyText = findViewById<TextView>(R.id.emptyText)
 
         viewModel.budgetsWithSpent.observe(this) { budgets ->
+            emptyText.visibility = if (budgets.isEmpty()) View.VISIBLE else View.GONE
             val adapter = BudgetAdapter(this, budgets.toMutableList()) { budget ->
                 AlertDialog.Builder(this)
                     .setMessage("Delete budget: ${budget.budget.name}?")
