@@ -14,6 +14,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.cashwind.app.worker.BillReminderWorker
+import com.cashwind.app.worker.BillRecurrenceWorker
 import com.cashwind.app.util.NotificationHelper
 import com.cashwind.app.database.CashwindDatabase
 import kotlinx.coroutines.GlobalScope
@@ -143,6 +144,7 @@ class DashboardActivity : Activity() {
         // Setup notification channel and schedule reminders after UI is ready
         NotificationHelper.createNotificationChannel(this)
         scheduleReminderWorker()
+        scheduleRecurrenceWorker()
         
         // Load bills data
         loadBillsData()
@@ -265,6 +267,18 @@ class DashboardActivity : Activity() {
             "bill_reminder_work",
             ExistingPeriodicWorkPolicy.KEEP,
             reminderWork
+        )
+    }
+
+    private fun scheduleRecurrenceWorker() {
+        val recurrenceWork = PeriodicWorkRequestBuilder<BillRecurrenceWorker>(
+            24, TimeUnit.HOURS // Check once daily for bills that need recurrence reset
+        ).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "bill_recurrence_work",
+            ExistingPeriodicWorkPolicy.KEEP,
+            recurrenceWork
         )
     }
 }
