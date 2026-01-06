@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.cashwind.app.BuildConfig
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.cashwind.app.worker.BillReminderWorker
 import com.cashwind.app.worker.BillRecurrenceWorker
@@ -145,6 +146,9 @@ class DashboardActivity : Activity() {
         NotificationHelper.createNotificationChannel(this)
         scheduleReminderWorker()
         scheduleRecurrenceWorker()
+        if (BuildConfig.DEBUG) {
+            scheduleRecurrenceTestWork()
+        }
         
         // Load bills data
         loadBillsData()
@@ -280,5 +284,10 @@ class DashboardActivity : Activity() {
             ExistingPeriodicWorkPolicy.KEEP,
             recurrenceWork
         )
+    }
+
+    private fun scheduleRecurrenceTestWork() {
+        val testWork = OneTimeWorkRequestBuilder<BillRecurrenceWorker>().build()
+        WorkManager.getInstance(this).enqueue(testWork)
     }
 }

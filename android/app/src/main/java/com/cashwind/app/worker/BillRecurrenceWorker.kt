@@ -1,6 +1,7 @@
 package com.cashwind.app.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.cashwind.app.database.CashwindDatabase
@@ -34,6 +35,7 @@ class BillRecurrenceWorker(context: Context, params: WorkerParameters) : Corouti
                             
                             // Check if the bill is overdue for a new cycle
                             if (now >= dueCal) {
+                                Log.d("Cashwind", "Recurrence reset triggered for bill ${billEntity.id} (${billEntity.name}) due ${billEntity.dueDate}")
                                 // Calculate the next due date
                                 val nextDueDate = calculateNextDueDate(dueCal, billEntity.frequency)
                                 
@@ -43,17 +45,18 @@ class BillRecurrenceWorker(context: Context, params: WorkerParameters) : Corouti
                                     dueDate = sdf.format(nextDueDate.time)
                                 )
                                 billDao.updateBill(updatedBill)
+                                Log.d("Cashwind", "Bill ${billEntity.id} reset to unpaid. New due date ${updatedBill.dueDate}")
                             }
                         }
                     } catch (e: Exception) {
                         // Log error but continue processing other bills
-                        e.printStackTrace()
+                        Log.e("Cashwind", "Error processing recurrence for bill ${billEntity.id}: ${e.message}")
                     }
                 }
             }
             Result.success()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("Cashwind", "BillRecurrenceWorker failure: ${e.message}")
             Result.retry()
         }
     }
