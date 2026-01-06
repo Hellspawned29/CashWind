@@ -119,7 +119,7 @@ class DashboardActivity : Activity() {
         
         mainLayout.addView(row2)
 
-        // Row 3: Goals
+        // Row 3: Goals and Analytics
         val row3 = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
@@ -139,6 +139,28 @@ class DashboardActivity : Activity() {
         })
 
         mainLayout.addView(row3)
+        
+        // Row 4: Calendar
+        val row4 = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            gravity = Gravity.CENTER
+            setPadding(0, 20, 0, 0)
+        }
+
+        row4.addView(createCard("📅", "Calendar", null) {
+            startActivity(Intent(this, CalendarActivity::class.java))
+        })
+
+        // Placeholder for future feature
+        row4.addView(createCard("🔍", "Search", null) {
+            // TODO: Implement search
+        })
+
+        mainLayout.addView(row4)
         
         setContentView(mainLayout)
         
