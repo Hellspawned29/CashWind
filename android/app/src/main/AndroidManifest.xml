@@ -81,6 +81,10 @@
             android:theme="@style/Theme.Cashwind"
             android:exported="false" />
         <activity
+            android:name="com.cashwind.app.CalendarActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
             android:name="com.cashwind.app.ExportActivity"
             android:theme="@style/Theme.Cashwind"
             android:exported="false" />

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?android:attr/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,20 +18,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Calendar"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginStart="8dp" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:gravity="center" />
 
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -45,48 +46,67 @@
             android:id="@+id/prevButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="← Prev"
-            android:textSize="12sp" />
+            android:text="◄"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/monthYearTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="January 2025"
-            android:textSize="16sp"
+            android:text="January 2026"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginStart="8dp" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:gravity="center" />
 
         <Button
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next →"
-            android:textSize="12sp" />
+            android:text="►"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Day Headers -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="S" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="M" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="W" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="F" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="S" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
     </LinearLayout>
 
     <!-- Calendar Grid -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarGridRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?android:attr/colorBackground" />
 
     <!-- Events for selected date -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bills Due:"
-        android:textSize="14sp"
+        android:text="Bills Due on Selected Date:"
+        android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/eventsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground" />
 
 </LinearLayout>

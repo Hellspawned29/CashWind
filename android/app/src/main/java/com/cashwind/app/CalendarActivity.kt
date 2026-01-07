@@ -75,7 +75,7 @@ class CalendarActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val bills = database.billDao().getAllBillsLive().value ?: emptyList()
+                val bills = database.billDao().getAllBillsDirect()
                 android.util.Log.d("CalendarActivity", "Bills loaded: ${bills.size}")
                 loadCalendarDays(bills)
             } catch (e: Exception) {
@@ -93,7 +93,7 @@ class CalendarActivity : AppCompatActivity() {
         }.get(Calendar.DAY_OF_WEEK) - 1
 
         val days = mutableListOf<CalendarAdapter.CalendarDay>()
-        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
         // Empty cells for days before the month starts
         repeat(firstDayOfWeek) {
@@ -108,10 +108,14 @@ class CalendarActivity : AppCompatActivity() {
             val hasBill = bills.any { bill ->
                 try {
                     val billDate = dateFormat.parse(bill.dueDate)
-                    val billCal = Calendar.getInstance().apply { time = billDate }
-                    billCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
-                    billCal.get(Calendar.MONTH) == cal.get(Calendar.MONTH) &&
-                    billCal.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH)
+                    if (billDate != null) {
+                        val billCal = Calendar.getInstance().apply { time = billDate }
+                        billCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
+                        billCal.get(Calendar.MONTH) == cal.get(Calendar.MONTH) &&
+                        billCal.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH)
+                    } else {
+                        false
+                    }
                 } catch (e: Exception) {
                     false
                 }
@@ -134,15 +138,19 @@ class CalendarActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val bills = database.billDao().getAllBillsLive().value ?: emptyList()
-                val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+                val bills = database.billDao().getAllBillsDirect()
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val eventsForDay = bills.filter { bill ->
                     try {
                         val billDate = dateFormat.parse(bill.dueDate)
-                        val billCal = Calendar.getInstance().apply { time = billDate }
-                        billCal.get(Calendar.YEAR) == selectedCal.get(Calendar.YEAR) &&
-                        billCal.get(Calendar.MONTH) == selectedCal.get(Calendar.MONTH) &&
-                        billCal.get(Calendar.DAY_OF_MONTH) == selectedCal.get(Calendar.DAY_OF_MONTH)
+                        if (billDate != null) {
+                            val billCal = Calendar.getInstance().apply { time = billDate }
+                            billCal.get(Calendar.YEAR) == selectedCal.get(Calendar.YEAR) &&
+                            billCal.get(Calendar.MONTH) == selectedCal.get(Calendar.MONTH) &&
+                            billCal.get(Calendar.DAY_OF_MONTH) == selectedCal.get(Calendar.DAY_OF_MONTH)
+                        } else {
+                            false
+                        }
                     } catch (e: Exception) {
                         false
                     }
