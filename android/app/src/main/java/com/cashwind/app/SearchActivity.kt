@@ -3,11 +3,9 @@ package com.cashwind.app
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.AccountEntity
 import com.cashwind.app.database.entity.BillEntity
 import com.cashwind.app.database.entity.TransactionEntity
@@ -17,19 +15,17 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     private lateinit var searchInput: EditText
     private lateinit var searchResultsRecyclerView: RecyclerView
     private lateinit var searchAdapter: SearchResultsAdapter
-    private lateinit var database: CashwindDatabase
     private var searchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        database = CashwindDatabase.getInstance(this)
         searchInput = findViewById(R.id.searchInput)
         searchResultsRecyclerView = findViewById(R.id.searchResultsRecyclerView)
         val backButton = findViewById<Button>(R.id.backButton)

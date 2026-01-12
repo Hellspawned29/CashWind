@@ -3,20 +3,17 @@ package com.cashwind.app
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddBudgetBinding
 import com.cashwind.app.ui.BudgetViewModel
-import com.cashwind.app.database.CashwindDatabase
 
-class AddBudgetActivity : AppCompatActivity() {
+class AddBudgetActivity : BaseActivity() {
     private lateinit var binding: ActivityAddBudgetBinding
     private val viewModel: BudgetViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val db = CashwindDatabase.getInstance(this@AddBudgetActivity)
-                return BudgetViewModel(db) as T
+                return BudgetViewModel(database) as T
             }
         }
     }

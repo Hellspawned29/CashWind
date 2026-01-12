@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.ui.PaycheckViewModel
 
-class PaycheckActivity : AppCompatActivity() {
+class PaycheckActivity : BaseActivity() {
     private val viewModel: PaycheckViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val db = CashwindDatabase.getInstance(this@PaycheckActivity)
-                return PaycheckViewModel(db) as T
+                return PaycheckViewModel(database) as T
             }
         }
     }

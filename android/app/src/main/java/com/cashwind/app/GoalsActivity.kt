@@ -10,18 +10,15 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.GoalEntity
 import com.cashwind.app.ui.GoalsViewModel
 
-class GoalsActivity : AppCompatActivity() {
+class GoalsActivity : BaseActivity() {
     private val viewModel: GoalsViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val db = CashwindDatabase.getInstance(this@GoalsActivity)
-                return GoalsViewModel(db) as T
+                return GoalsViewModel(database) as T
             }
         }
     }

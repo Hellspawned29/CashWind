@@ -5,24 +5,18 @@ import android.os.Bundle
 import android.widget.Button
 
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.util.CsvExportUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.android.material.button.MaterialButton
 
-class ExportActivity : AppCompatActivity() {
-
-    private lateinit var database: CashwindDatabase
+class ExportActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_export)
-
-        database = CashwindDatabase.getInstance(this)
 
         val backButton = findViewById<Button>(R.id.backButton)
         val exportBillsButton = findViewById<MaterialButton>(R.id.exportBillsButton)

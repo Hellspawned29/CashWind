@@ -8,17 +8,14 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.ui.BudgetViewModel
 
-class BudgetActivity : AppCompatActivity() {
+class BudgetActivity : BaseActivity() {
     private val viewModel: BudgetViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val db = CashwindDatabase.getInstance(this@BudgetActivity)
-                return BudgetViewModel(db) as T
+                return BudgetViewModel(database) as T
             }
         }
     }

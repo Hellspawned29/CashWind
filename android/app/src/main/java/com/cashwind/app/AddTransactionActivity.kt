@@ -5,19 +5,17 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.ui.AccountTransactionViewModel
+import com.cashwind.app.util.DateUtils
 import java.util.Calendar
 
-class AddTransactionActivity : AppCompatActivity() {
+class AddTransactionActivity : BaseActivity() {
     private val viewModel: AccountTransactionViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
                 val accountId = intent.getIntExtra("accountId", -1)
-                val db = CashwindDatabase.getInstance(this@AddTransactionActivity)
-                return AccountTransactionViewModel(db, accountId) as T
+                return AccountTransactionViewModel(database, accountId) as T
             }
         }
     }

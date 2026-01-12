@@ -6,20 +6,17 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashwind.app.databinding.ActivityMainBinding
 import com.cashwind.app.ui.MainViewModel
 import com.cashwind.app.ui.BillAdapter
-import com.cashwind.app.database.CashwindDatabase
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val database = CashwindDatabase.getInstance(this@MainActivity)
                 return MainViewModel(database) as T
             }
         }

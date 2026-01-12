@@ -2,22 +2,19 @@ package com.cashwind.app
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddGoalBinding
 import com.cashwind.app.ui.GoalsViewModel
-import com.cashwind.app.database.CashwindDatabase
-import java.text.SimpleDateFormat
+import com.cashwind.app.util.DateUtils
 import java.util.*
 
-class AddGoalActivity : AppCompatActivity() {
+class AddGoalActivity : BaseActivity() {
     private lateinit var binding: ActivityAddGoalBinding
     private val viewModel: GoalsViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val db = CashwindDatabase.getInstance(this@AddGoalActivity)
-                return GoalsViewModel(db) as T
+                return GoalsViewModel(database) as T
             }
         }
     }
@@ -28,7 +25,7 @@ class AddGoalActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Set default target date (1 year from now)
-        val defaultDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(
+        val defaultDate = DateUtils.formatIsoDate(
             Calendar.getInstance().apply { add(Calendar.YEAR, 1) }.time
         )
         binding.goalTargetDateInput.setText(defaultDate)
@@ -73,11 +70,7 @@ class AddGoalActivity : AppCompatActivity() {
         }
 
         // Validate date format
-        try {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            sdf.isLenient = false
-            sdf.parse(targetDate)
-        } catch (e: Exception) {
+        if (DateUtils.parseIsoDate(targetDate) == null) {
             Snackbar.make(binding.root, "Invalid date format (yyyy-MM-dd)", Snackbar.LENGTH_SHORT).show()
             return
         }

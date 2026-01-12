@@ -4,23 +4,19 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddBillBinding
 import com.cashwind.app.ui.AddBillViewModel
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.BillEntity
-import java.text.SimpleDateFormat
+import com.cashwind.app.util.DateUtils
 import java.util.Calendar
-import java.util.Locale
 
-class AddBillActivity : AppCompatActivity() {
+class AddBillActivity : BaseActivity() {
     private lateinit var binding: ActivityAddBillBinding
     private val viewModel: AddBillViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val database = CashwindDatabase.getInstance(this@AddBillActivity)
                 return AddBillViewModel(database) as T
             }
         }
@@ -115,8 +111,7 @@ class AddBillActivity : AppCompatActivity() {
         } else {
             binding.titleText.text = "Add Bill"
             binding.saveBillButton.text = "SAVE"
-            val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Calendar.getInstance().time)
-            binding.dueDateInput.setText(today)
+            binding.dueDateInput.setText(DateUtils.getCurrentIsoDate())
             binding.recurringSwitch.isChecked = false
             binding.frequencySpinner.isEnabled = false
         }
@@ -138,8 +133,7 @@ class AddBillActivity : AppCompatActivity() {
         
         if (dateText.isNotEmpty()) {
             try {
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                val date = sdf.parse(dateText)
+                val date = DateUtils.parseIsoDate(dateText)
                 if (date != null) calendar.time = date
             } catch (e: Exception) {
                 // Use today's date if parsing fails
@@ -155,8 +149,7 @@ class AddBillActivity : AppCompatActivity() {
             { _, selectedYear, selectedMonth, selectedDay ->
                 val selectedCalendar = Calendar.getInstance()
                 selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                binding.dueDateInput.setText(sdf.format(selectedCalendar.time))
+                binding.dueDateInput.setText(DateUtils.formatIsoDate(selectedCalendar.time))
             },
             year,
             month,
@@ -199,11 +192,7 @@ class AddBillActivity : AppCompatActivity() {
         }
 
         // Validate date format
-        try {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            sdf.isLenient = false
-            sdf.parse(dueDate)
-        } catch (e: Exception) {
+        if (DateUtils.parseIsoDate(dueDate) == null) {
             Snackbar.make(binding.root, "Invalid date format (yyyy-MM-dd)", Snackbar.LENGTH_SHORT).show()
             return
         }

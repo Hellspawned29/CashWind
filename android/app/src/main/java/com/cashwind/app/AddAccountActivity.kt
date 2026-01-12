@@ -3,20 +3,17 @@ package com.cashwind.app
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.AccountEntity
 import com.cashwind.app.databinding.ActivityAddAccountBinding
 import com.cashwind.app.ui.AddAccountViewModel
 
-class AddAccountActivity : AppCompatActivity() {
+class AddAccountActivity : BaseActivity() {
     private lateinit var binding: ActivityAddAccountBinding
     private val viewModel: AddAccountViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val database = CashwindDatabase.getInstance(this@AddAccountActivity)
                 return AddAccountViewModel(database) as T
             }
         }

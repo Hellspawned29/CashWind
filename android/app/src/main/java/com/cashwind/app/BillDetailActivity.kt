@@ -7,30 +7,27 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.Spinner
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityBillDetailBinding
 import com.cashwind.app.ui.BillDetailViewModel
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.BillReminderEntity
 import com.cashwind.app.model.Bill
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class BillDetailActivity : AppCompatActivity() {
+class BillDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityBillDetailBinding
     private val viewModel: BillDetailViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                val database = CashwindDatabase.getInstance(this@BillDetailActivity)
                 return BillDetailViewModel(database) as T
             }
         }
     }
 
     private lateinit var bill: Bill
-    private val reminderDao by lazy { CashwindDatabase.getInstance(this).billReminderDao() }
+    private val reminderDao by lazy { database.billReminderDao() }
     private var currentReminder: BillReminderEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
