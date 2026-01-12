@@ -34,7 +34,15 @@ class BillAdapter(
             onDetail: (Bill) -> Unit
         ) {
             binding.billName.text = bill.name
-            binding.billAmount.text = "$${String.format("%.2f", bill.amount)}"
+            
+            // Display amount with past due indicator if applicable
+            val amountText = if (bill.hasPastDue && bill.pastDueAmount > 0.0) {
+                "$${String.format("%.2f", bill.amount)} + PD: $${String.format("%.2f", bill.pastDueAmount)}"
+            } else {
+                "$${String.format("%.2f", bill.amount)}"
+            }
+            binding.billAmount.text = amountText
+            
             binding.billDueDate.text = "Due: ${formatDate(bill.dueDate)}"
             binding.billCategory.text = bill.category ?: "General"
             binding.billStatus.text = if (bill.isPaid) "Paid" else "Unpaid"

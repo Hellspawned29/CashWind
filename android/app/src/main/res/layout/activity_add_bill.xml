@@ -209,7 +209,53 @@
             android:background="@drawable/edit_text_background"
             android:textColor="?android:attr/textColorPrimary"
             android:textColorHint="?attr/colorTextSecondary"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="16dp" />
+
+        <!-- Past Due Balance -->
+        <CheckBox
+            android:id="@+id/hasPastDueCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This bill has a past due balance"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:id="@+id/pastDueSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Past Due Amount"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/pastDueAmountInput"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="e.g., 50.00"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textColorHint="?attr/colorTextSecondary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This amount will be tracked separately from the regular bill amount"
+                android:textSize="11sp"
+                android:textColor="?attr/colorTextSecondary"
+                android:layout_marginBottom="16dp" />
+        </LinearLayout>
 
         <!-- Buttons -->
         <LinearLayout

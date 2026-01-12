@@ -66,6 +66,10 @@ class AddBillActivity : AppCompatActivity() {
             binding.frequencySpinner.isEnabled = isChecked
         }
 
+        binding.hasPastDueCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            binding.pastDueSection.visibility = if (isChecked) android.view.View.VISIBLE else android.view.View.GONE
+        }
+
         // Date picker button
         binding.datePickerButton.setOnClickListener {
             showDatePicker()
@@ -81,6 +85,8 @@ class AddBillActivity : AppCompatActivity() {
         val existingWebLink = intent.getStringExtra("webLink")
         val existingRecurring = intent.getBooleanExtra("recurring", false)
         val existingFrequency = intent.getStringExtra("frequency")
+        val existingHasPastDue = intent.getBooleanExtra("hasPastDue", false)
+        val existingPastDueAmount = intent.getDoubleExtra("pastDueAmount", 0.0)
         existingIsPaid = intent.getBooleanExtra("isPaid", false)
 
         if (editingBillId != 0) {
@@ -100,6 +106,11 @@ class AddBillActivity : AppCompatActivity() {
             existingFrequency?.let { freq ->
                 val position = resources.getStringArray(R.array.recurrence_frequency).indexOf(freq)
                 if (position >= 0) binding.frequencySpinner.setSelection(position)
+            }
+            binding.hasPastDueCheckbox.isChecked = existingHasPastDue
+            if (existingHasPastDue && existingPastDueAmount > 0.0) {
+                binding.pastDueAmountInput.setText(existingPastDueAmount.toString())
+                binding.pastDueSection.visibility = android.view.View.VISIBLE
             }
         } else {
             binding.titleText.text = "Add Bill"
@@ -163,6 +174,13 @@ class AddBillActivity : AppCompatActivity() {
         val webLink = binding.webLinkInput.text.toString().trim()
         val recurring = binding.recurringSwitch.isChecked
         val frequency = if (recurring) binding.frequencySpinner.selectedItem?.toString() else null
+        val hasPastDue = binding.hasPastDueCheckbox.isChecked
+        val pastDueAmountStr = binding.pastDueAmountInput.text.toString().trim()
+        val pastDueAmount = if (hasPastDue && pastDueAmountStr.isNotEmpty()) {
+            pastDueAmountStr.toDoubleOrNull() ?: 0.0
+        } else {
+            0.0
+        }
 
         // Validation
         if (name.isEmpty()) {
@@ -223,7 +241,9 @@ class AddBillActivity : AppCompatActivity() {
             notes = if (notes.isEmpty()) null else notes,
             recurring = recurring,
             frequency = frequency,
-            accountId = accountId
+            accountId = accountId,
+            hasPastDue = hasPastDue,
+            pastDueAmount = pastDueAmount
         )
 
         val message = if (editingBillId == 0) "Bill added!" else "Bill updated!"

@@ -23,11 +23,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class DashboardActivity : Activity() {
     private var billsCard: LinearLayout? = null
+    private var pastDueCard: LinearLayout? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,7 +142,7 @@ class DashboardActivity : Activity() {
 
         mainLayout.addView(row3)
         
-        // Row 4: Calendar
+        // Row 4: Calendar and Past Due
         val row4 = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
@@ -155,10 +157,10 @@ class DashboardActivity : Activity() {
             startActivity(Intent(this, CalendarActivity::class.java))
         })
 
-        // Placeholder for future feature
-        row4.addView(createCard("🔍", "Search", null) {
-            // TODO: Implement search
-        })
+        pastDueCard = createCard("⚠️", "Past Due", null) {
+            startActivity(Intent(this, PastDueBillsActivity::class.java))
+        }
+        row4.addView(pastDueCard)
 
         mainLayout.addView(row4)
         
@@ -185,6 +187,7 @@ class DashboardActivity : Activity() {
             val calendar = Calendar.getInstance()
             val currentMonth = calendar.get(Calendar.MONTH)
             val currentYear = calendar.get(Calendar.YEAR)
+            val today = sdf.format(Date())
             
             val monthTotal = bills.filter { bill ->
                 try {
@@ -199,8 +202,11 @@ class DashboardActivity : Activity() {
                 }
             }.sumOf { it.amount }
             
+            val overdueTotal = db.billDao().getOverdueBills(today).sumOf { it.amount }
+            
             runOnUiThread {
                 updateBillsCard(monthTotal)
+                updatePastDueCard(overdueTotal)
             }
         }
     }
@@ -221,6 +227,19 @@ class DashboardActivity : Activity() {
                 text = "$${String.format("%.2f", monthTotal)}"
                 textSize = 16f
                 setTextColor(textColor)
+                gravity = Gravity.CENTER
+                setPadding(0, 4, 0, 0)
+            }
+            card.addView(amountText)
+        }
+    }
+    
+    private fun updatePastDueCard(overdueTotal: Double) {
+        pastDueCard?.let { card ->
+            val amountText = TextView(this).apply {
+                text = "$${String.format("%.2f", overdueTotal)}"
+                textSize = 16f
+                setTextColor(Color.RED)
                 gravity = Gravity.CENTER
                 setPadding(0, 4, 0, 0)
             }

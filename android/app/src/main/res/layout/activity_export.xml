@@ -48,7 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Bills as CSV"
-        android:textColor="@android:color/white"
         android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="12dp" />
 
@@ -57,7 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Accounts as CSV"
-        android:textColor="@android:color/white"
         android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="12dp" />
 
@@ -66,7 +64,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Transactions as CSV"
-        android:textColor="@android:color/white"
         android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="12dp" />
 
@@ -75,7 +72,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export All Data"
-        android:textColor="@android:color/white"
         android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="12dp" />
 

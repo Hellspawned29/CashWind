@@ -58,10 +58,12 @@ class MainViewModel(private val database: CashwindDatabase) : ViewModel() {
         var dueThisMonthAmount = 0.0
 
         list.forEach { bill ->
+            val billTotal = bill.amount + bill.pastDueAmount
+            
             total += 1
-            totalAmount += bill.amount
+            totalAmount += billTotal
             if (bill.isPaid) paid++ else unpaid++
-            if (bill.isPaid) paidAmount += bill.amount else unpaidAmount += bill.amount
+            if (bill.isPaid) paidAmount += billTotal else unpaidAmount += billTotal
 
             try {
                 val due = sdf.parse(bill.dueDate)
@@ -69,11 +71,11 @@ class MainViewModel(private val database: CashwindDatabase) : ViewModel() {
                     val cal = Calendar.getInstance().apply { time = due }
                     if (cal >= now && cal <= weekAhead) {
                         dueThisWeek++
-                        dueThisWeekAmount += bill.amount
+                        dueThisWeekAmount += billTotal
                     }
                     if (cal.get(Calendar.MONTH) == now.get(Calendar.MONTH) && cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
                         dueThisMonth++
-                        dueThisMonthAmount += bill.amount
+                        dueThisMonthAmount += billTotal
                     }
                 }
             } catch (_: Exception) {
@@ -161,6 +163,8 @@ class MainViewModel(private val database: CashwindDatabase) : ViewModel() {
             notes = notes,
             webLink = webLink,
             accountId = accountId,
+            hasPastDue = hasPastDue,
+            pastDueAmount = pastDueAmount,
             createdAt = createdAt
         )
     }

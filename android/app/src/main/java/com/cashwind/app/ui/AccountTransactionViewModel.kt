@@ -87,7 +87,8 @@ class AccountTransactionViewModel(private val db: CashwindDatabase, val accountI
         val account = accountDao.getAccountById(accountId) ?: return
         val transactions = transactionDao.getTransactionsByAccount(accountId)
         
-        var newBalance = account.balance
+        // Calculate balance from scratch: start at 0 and add all transactions
+        var newBalance = 0.0
         transactions.forEach { tx ->
             val sign = if (tx.type == "income") 1.0 else -1.0
             newBalance += (tx.amount * sign)

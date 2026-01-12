@@ -128,6 +128,34 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
         }
     }
 
+    // Past due bills monitoring
+    val pastDueBills: LiveData<List<Bill>> = allBills.map { bills ->
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val today = sdf.format(Calendar.getInstance().time)
+        bills.filter { bill ->
+            !bill.isPaid && bill.dueDate < today
+        }
+    }
+
+    val pastDueBillsTotal: LiveData<Double> = pastDueBills.map { bills ->
+        bills.sumOf { it.amount + it.pastDueAmount }
+    }
+
+    val pastDueBillsCount: LiveData<Int> = pastDueBills.map { it.size }
+
+    // Bills with past due balances (separate from overdue bills)
+    val billsWithPastDueBalance: LiveData<List<Bill>> = allBills.map { bills ->
+        bills.filter { bill ->
+            bill.hasPastDue && bill.pastDueAmount > 0.0
+        }
+    }
+
+    val pastDueBalanceTotal: LiveData<Double> = billsWithPastDueBalance.map { bills ->
+        bills.sumOf { it.pastDueAmount }
+    }
+
+    val pastDueBalanceCount: LiveData<Int> = billsWithPastDueBalance.map { it.size }
+
     // No longer needed - paycheck amount comes from recurring transactions
     // fun setPaycheckAmount(amount: Double) {
     //     paycheckAmount.value = amount
@@ -362,6 +390,24 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
         frequency = frequency,
         notes = notes,
         webLink = webLink,
+        hasPastDue = hasPastDue,
+        pastDueAmount = pastDueAmount,
         createdAt = createdAt
     )
+
+    fun allocateToPastDueBalance(billId: Int, amount: Double) {
+        viewModelScope.launch {
+            try {
+                val bill = billDao.getBillById(billId)
+                if (bill != null && bill.hasPastDue) {
+                    // Update the bill's past due amount
+                    val updatedPastDueAmount = (bill.pastDueAmount - amount).coerceAtLeast(0.0)
+                    val updatedBill = bill.copy(pastDueAmount = updatedPastDueAmount)
+                    billDao.updateBill(updatedBill)
+                }
+            } catch (e: Exception) {
+                // Log error
+            }
+        }
+    }
 }

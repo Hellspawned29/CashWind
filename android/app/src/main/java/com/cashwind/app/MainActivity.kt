@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
                     putExtra("lastPaidAt", bill.lastPaidAt)
                     putExtra("recurring", bill.recurring)
                     putExtra("frequency", bill.frequency)
+                    putExtra("hasPastDue", bill.hasPastDue)
+                    putExtra("pastDueAmount", bill.pastDueAmount)
                 }
                 startActivity(intent)
             }

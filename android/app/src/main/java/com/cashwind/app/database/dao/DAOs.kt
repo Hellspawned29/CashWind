@@ -39,6 +39,9 @@ interface BillDao {
     
     @Query("SELECT * FROM bills ORDER BY dueDate ASC")
     suspend fun getAllBillsDirect(): List<BillEntity>
+    
+    @Query("SELECT * FROM bills WHERE isPaid = 0 AND dueDate < :today ORDER BY dueDate ASC")
+    suspend fun getOverdueBills(today: String): List<BillEntity>
 }
 
 @Dao
@@ -209,4 +212,31 @@ interface BillReminderDao {
 
     @Query("SELECT * FROM bill_reminders")
     fun getAllReminders(): kotlinx.coroutines.flow.Flow<List<BillReminderEntity>>
+}
+
+@Dao
+interface BillPaymentAllocationDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllocation(allocation: BillPaymentAllocationEntity)
+
+    @Update
+    suspend fun updateAllocation(allocation: BillPaymentAllocationEntity)
+
+    @Delete
+    suspend fun deleteAllocation(allocation: BillPaymentAllocationEntity)
+
+    @Query("SELECT * FROM bill_payment_allocations WHERE billId = :billId AND userId = :userId ORDER BY createdAt DESC")
+    suspend fun getAllocationsForBill(billId: Int, userId: Int): List<BillPaymentAllocationEntity>
+
+    @Query("SELECT * FROM bill_payment_allocations WHERE userId = :userId ORDER BY createdAt DESC")
+    fun getAllAllocationsLive(userId: Int): LiveData<List<BillPaymentAllocationEntity>>
+
+    @Query("SELECT SUM(allocatedAmount) FROM bill_payment_allocations WHERE billId = :billId AND userId = :userId")
+    suspend fun getTotalAllocatedForBill(billId: Int, userId: Int): Double?
+
+    @Query("SELECT SUM(paidAmount) FROM bill_payment_allocations WHERE billId = :billId AND userId = :userId")
+    suspend fun getTotalPaidForBill(billId: Int, userId: Int): Double?
+
+    @Query("DELETE FROM bill_payment_allocations WHERE billId = :billId")
+    suspend fun deleteAllocationsForBill(billId: Int)
 }

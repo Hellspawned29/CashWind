@@ -18,9 +18,10 @@ import com.cashwind.app.database.dao.*
         BudgetEntity::class,
         GoalEntity::class,
         PaycheckSettingsEntity::class,
-        BillReminderEntity::class
+        BillReminderEntity::class,
+        BillPaymentAllocationEntity::class
     ],
-    version = 8
+    version = 10
 )
 abstract class CashwindDatabase : RoomDatabase() {
     abstract fun billDao(): BillDao
@@ -31,6 +32,7 @@ abstract class CashwindDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun paycheckSettingsDao(): PaycheckSettingsDao
     abstract fun billReminderDao(): BillReminderDao
+    abstract fun billPaymentAllocationDao(): BillPaymentAllocationDao
 
     companion object {
         @Volatile
@@ -53,6 +55,23 @@ abstract class CashwindDatabase : RoomDatabase() {
             }
         }
 
+        // Migration from version 8 to 9 - adds webLink to bills
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add webLink column to bills table
+                database.execSQL("ALTER TABLE bills ADD COLUMN webLink TEXT")
+            }
+        }
+
+        // Migration from version 9 to 10 - adds hasPastDue and pastDueAmount to bills
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add hasPastDue and pastDueAmount columns to bills table
+                database.execSQL("ALTER TABLE bills ADD COLUMN hasPastDue INTEGER DEFAULT 0")
+                database.execSQL("ALTER TABLE bills ADD COLUMN pastDueAmount REAL DEFAULT 0.0")
+            }
+        }
+
         fun getInstance(context: Context): CashwindDatabase {
             return instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -60,7 +79,7 @@ abstract class CashwindDatabase : RoomDatabase() {
                     CashwindDatabase::class.java,
                     "cashwind_db"
                 )
-                    .addMigrations(MIGRATION_6_7, MIGRATION_7_8)
+                    .addMigrations(MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10)
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { instance = it }

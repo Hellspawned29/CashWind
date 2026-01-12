@@ -14,6 +14,8 @@ data class Bill(
     val notes: String? = null,
     val webLink: String? = null,
     val accountId: Int? = null,
+    val hasPastDue: Boolean = false,
+    val pastDueAmount: Double = 0.0,
     val createdAt: String? = null
 )
 

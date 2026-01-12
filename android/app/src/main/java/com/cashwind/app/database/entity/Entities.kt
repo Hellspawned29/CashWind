@@ -29,6 +29,8 @@ data class BillEntity(
     val webLink: String? = null,
     val accountId: Int? = null,  // Account where bill payment comes from
     val linkedTransactionId: Int? = null,  // Transaction created when bill is paid
+    val hasPastDue: Boolean = false,  // Whether this bill has a past due balance
+    val pastDueAmount: Double = 0.0,  // Past due balance amount
     val createdAt: String? = null,
     val syncedAt: Long = System.currentTimeMillis()
 )
@@ -119,4 +121,19 @@ data class BillReminderEntity(
     val isEnabled: Boolean = true,
     val createdAt: String? = null,
     val syncedAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "bill_payment_allocations")
+data class BillPaymentAllocationEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val billId: Int,
+    val userId: Int,
+    val allocatedAmount: Double, // Amount allocated from paycheck
+    val paidAmount: Double = 0.0, // Amount actually paid so far
+    val allocationDate: String, // yyyy-MM-dd when allocated
+    val paycheckDate: String? = null, // Which paycheck this came from
+    val notes: String? = null,
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
 )

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="false"
+    android:background="?android:attr/colorBackground"
+    android:fitsSystemWindows="true">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
+    android:gravity="top"
     android:background="?android:attr/colorBackground">
 
     <LinearLayout
@@ -73,7 +81,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/colorBackground">
         
         <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="S" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="M" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
@@ -84,12 +93,14 @@
         <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="S" android:gravity="center" android:textStyle="bold" android:textColor="?android:attr/textColorPrimary"/>
     </LinearLayout>
 
-    <!-- Calendar Grid -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendarGridRecyclerView"
+    <!-- Calendar Grid (TableLayout for reliable equal columns) -->
+    <TableLayout
+        android:id="@+id/calendarTable"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minHeight="350dp"
+        android:stretchColumns="0,1,2,3,4,5,6"
+        android:layout_marginBottom="16dp"
         android:background="?android:attr/colorBackground" />
 
     <!-- Events for selected date -->
@@ -110,3 +121,4 @@
         android:background="?android:attr/colorBackground" />
 
 </LinearLayout>
+</ScrollView>

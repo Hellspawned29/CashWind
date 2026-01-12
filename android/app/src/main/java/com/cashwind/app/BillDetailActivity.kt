@@ -51,6 +51,8 @@ class BillDetailActivity : AppCompatActivity() {
             frequency = intent.getStringExtra("frequency"),
             notes = intent.getStringExtra("notes"),
             webLink = intent.getStringExtra("webLink"),
+            hasPastDue = intent.getBooleanExtra("hasPastDue", false),
+            pastDueAmount = intent.getDoubleExtra("pastDueAmount", 0.0),
             createdAt = null
         )
 
@@ -70,6 +72,8 @@ class BillDetailActivity : AppCompatActivity() {
                 putExtra("recurring", bill.recurring)
                 putExtra("frequency", bill.frequency)
                 putExtra("webLink", bill.webLink)
+                putExtra("hasPastDue", bill.hasPastDue)
+                putExtra("pastDueAmount", bill.pastDueAmount)
             }
             startActivity(intent)
         }
@@ -169,7 +173,16 @@ class BillDetailActivity : AppCompatActivity() {
 
     private fun bindBill() {
         binding.billName.text = bill.name
-        binding.billAmount.text = "$${String.format("%.2f", bill.amount)}"
+        val totalAmount = bill.amount + bill.pastDueAmount
+        binding.billAmount.text = "$${String.format("%.2f", totalAmount)}"
+        
+        // Show breakdown if there's a past due amount
+        if (bill.hasPastDue && bill.pastDueAmount > 0.0) {
+            binding.billAmount.text = "$${String.format("%.2f", bill.amount)} + Past Due: $${String.format("%.2f", bill.pastDueAmount)}"
+        } else {
+            binding.billAmount.text = "$${String.format("%.2f", bill.amount)}"
+        }
+        
         binding.billDue.text = bill.dueDate
         binding.billStatus.text = if (bill.isPaid) "Paid" else "Unpaid"
         binding.billLastPaid.text = bill.lastPaidAt?.let { "Last paid: $it" } ?: ""
