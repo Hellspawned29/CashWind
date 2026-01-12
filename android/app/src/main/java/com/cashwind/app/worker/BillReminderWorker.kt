@@ -4,13 +4,12 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.cashwind.app.database.CashwindDatabase
+import com.cashwind.app.util.DateUtils
 import com.cashwind.app.util.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.first
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 class BillReminderWorker(
     context: Context,
@@ -28,7 +27,6 @@ class BillReminderWorker(
             // Create notification channel
             NotificationHelper.createNotificationChannel(applicationContext)
 
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
             val today = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
@@ -47,7 +45,7 @@ class BillReminderWorker(
                 if (reminder == null || !reminder.isEnabled) return@forEach
 
                 try {
-                    val dueDate = sdf.parse(bill.dueDate)
+                    val dueDate = DateUtils.parseIsoDate(bill.dueDate)
                     if (dueDate != null) {
                         val dueCal = Calendar.getInstance().apply {
                             time = dueDate
@@ -84,7 +82,7 @@ class BillReminderWorker(
                 if (remaining <= 0) return@forEach
 
                 try {
-                    val targetDate = sdf.parse(goal.targetDate)
+                    val targetDate = DateUtils.parseIsoDate(goal.targetDate)
                     if (targetDate != null) {
                         val targetCal = Calendar.getInstance().apply {
                             time = targetDate

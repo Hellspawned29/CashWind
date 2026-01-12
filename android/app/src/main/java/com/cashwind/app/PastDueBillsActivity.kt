@@ -8,6 +8,7 @@ import android.widget.*
 import com.cashwind.app.database.entity.BillEntity
 import com.cashwind.app.database.entity.BillPaymentAllocationEntity
 import com.cashwind.app.util.DateUtils
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -39,7 +40,7 @@ class PastDueBillsActivity : BaseActivity() {
             setPadding(0, 0, 0, 30)
         }
         
-        val backButton = Button(this).apply {
+        val backButton = MaterialButton(this).apply {
             id = R.id.backButton
             text = "Back"
             textSize = 14f
@@ -223,7 +224,7 @@ class PastDueBillsActivity : BaseActivity() {
             }
             
             // Allocate button
-            val allocateButton = Button(this@PastDueBillsActivity).apply {
+            val allocateButton = MaterialButton(this@PastDueBillsActivity).apply {
                 text = "Allocate $"
                 textSize = 14f
                 layoutParams = LinearLayout.LayoutParams(
@@ -244,7 +245,7 @@ class PastDueBillsActivity : BaseActivity() {
             buttonRow.addView(allocateButton)
             
             // Mark paid button
-            val payButton = Button(this@PastDueBillsActivity).apply {
+            val payButton = MaterialButton(this@PastDueBillsActivity).apply {
                 text = "Mark Paid"
                 textSize = 14f
                 layoutParams = LinearLayout.LayoutParams(

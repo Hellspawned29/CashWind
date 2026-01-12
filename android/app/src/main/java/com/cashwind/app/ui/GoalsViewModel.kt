@@ -6,9 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.GoalEntity
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class GoalsViewModel(private val db: CashwindDatabase) : ViewModel() {
     private val goalDao = db.goalDao()

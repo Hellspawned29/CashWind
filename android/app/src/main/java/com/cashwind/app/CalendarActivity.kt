@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.database.entity.BillEntity
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarActivity : BaseActivity() {
@@ -56,8 +56,7 @@ class CalendarActivity : BaseActivity() {
     }
 
     private fun updateCalendar() {
-        val monthFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-        monthYearTextView.text = monthFormat.format(currentCalendar.time)
+        monthYearTextView.text = DateUtils.formatFullMonthYear(currentCalendar.time)
 
         android.util.Log.d("CalendarActivity", "updateCalendar called")
         
@@ -96,7 +95,6 @@ class CalendarActivity : BaseActivity() {
 
             android.util.Log.d("CalendarActivity", "Days in month: $daysInMonth, First day: $firstDayOfWeek")
 
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val totalCells = firstDayOfWeek + daysInMonth
             val rows = Math.ceil(totalCells / 7.0).toInt()
             
@@ -158,7 +156,7 @@ class CalendarActivity : BaseActivity() {
                         // Check for bills on this day
                         val dayBills = bills.filter { bill ->
                             try {
-                                val billDate = dateFormat.parse(bill.dueDate)
+                                val billDate = DateUtils.parseIsoDate(bill.dueDate)
                                 if (billDate != null) {
                                     val billCal = Calendar.getInstance().apply { time = billDate }
                                     billCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
@@ -245,10 +243,9 @@ class CalendarActivity : BaseActivity() {
         lifecycleScope.launch {
             try {
                 val bills = database.billDao().getAllBillsDirect()
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val eventsForDay = bills.filter { bill ->
                     try {
-                        val billDate = dateFormat.parse(bill.dueDate)
+                        val billDate = DateUtils.parseIsoDate(bill.dueDate)
                         if (billDate != null) {
                             val billCal = Calendar.getInstance().apply { time = billDate }
                             billCal.get(Calendar.YEAR) == selectedCal.get(Calendar.YEAR) &&

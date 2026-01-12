@@ -16,18 +16,15 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.cashwind.app.worker.BillReminderWorker
 import com.cashwind.app.worker.BillRecurrenceWorker
+import com.cashwind.app.util.DateUtils
 import com.cashwind.app.util.NotificationHelper
-import com.cashwind.app.database.CashwindDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-class DashboardActivity : Activity() {
+class DashboardActivity : BaseActivity() {
     private var billsCard: LinearLayout? = null
     private var pastDueCard: LinearLayout? = null
     
@@ -64,13 +61,13 @@ class DashboardActivity : Activity() {
 
         val title = TextView(this).apply {
             text = "Cashwind"
-            textSize = 36f
+            setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_display))
             gravity = Gravity.CENTER
         }
 
         val version = TextView(this).apply {
             text = "v${BuildConfig.VERSION_NAME}"
-            textSize = 14f
+            setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_body))
             setPadding(12, 16, 0, 0)
             gravity = Gravity.CENTER_VERTICAL
         }
@@ -180,18 +177,16 @@ class DashboardActivity : Activity() {
     
     private fun loadBillsData() {
         GlobalScope.launch {
-            val db = CashwindDatabase.getInstance(this@DashboardActivity)
-            val bills = db.billDao().getAllBills(1).first() // userId = 1
+            val bills = database.billDao().getAllBills(1).first() // userId = 1
             
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
             val calendar = Calendar.getInstance()
             val currentMonth = calendar.get(Calendar.MONTH)
             val currentYear = calendar.get(Calendar.YEAR)
-            val today = sdf.format(Date())
+            val today = DateUtils.getCurrentIsoDate()
             
             val monthTotal = bills.filter { bill ->
                 try {
-                    val dueDate = sdf.parse(bill.dueDate)
+                    val dueDate = DateUtils.parseIsoDate(bill.dueDate)
                     if (dueDate != null) {
                         val dueCal = Calendar.getInstance().apply { time = dueDate }
                         dueCal.get(Calendar.MONTH) == currentMonth && 
@@ -202,7 +197,7 @@ class DashboardActivity : Activity() {
                 }
             }.sumOf { it.amount }
             
-            val overdueTotal = db.billDao().getOverdueBills(today).sumOf { it.amount }
+            val overdueTotal = database.billDao().getOverdueBills(today).sumOf { it.amount }
             
             runOnUiThread {
                 updateBillsCard(monthTotal)
@@ -225,7 +220,7 @@ class DashboardActivity : Activity() {
             
             val amountText = TextView(this).apply {
                 text = "$${String.format("%.2f", monthTotal)}"
-                textSize = 16f
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_body_large))
                 setTextColor(textColor)
                 gravity = Gravity.CENTER
                 setPadding(0, 4, 0, 0)
@@ -238,7 +233,7 @@ class DashboardActivity : Activity() {
         pastDueCard?.let { card ->
             val amountText = TextView(this).apply {
                 text = "$${String.format("%.2f", overdueTotal)}"
-                textSize = 16f
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_body_large))
                 setTextColor(Color.RED)
                 gravity = Gravity.CENTER
                 setPadding(0, 4, 0, 0)
@@ -281,13 +276,13 @@ class DashboardActivity : Activity() {
             
             val iconText = TextView(context).apply {
                 text = icon
-                textSize = 48f
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_huge))
                 setPadding(0, 0, 0, 16)
             }
             
             val labelText = TextView(context).apply {
                 text = label
-                textSize = 18f
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_subheading))
                 setTextColor(textColor)
                 gravity = Gravity.CENTER
             }

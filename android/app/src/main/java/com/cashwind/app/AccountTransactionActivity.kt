@@ -134,7 +134,7 @@ class AccountTransactionActivity : BaseActivity() {
             frequencyLabel.visibility = if (isChecked) android.view.View.VISIBLE else android.view.View.GONE
         }
 
-        selectedDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(Calendar.getInstance().time)
+        selectedDate = DateUtils.getCurrentIsoDate()
         dateInput.setText(selectedDate)
 
         dateInput.setOnClickListener {

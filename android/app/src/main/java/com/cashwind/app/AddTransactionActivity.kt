@@ -63,7 +63,7 @@ class AddTransactionActivity : BaseActivity() {
             }
         }
 
-        selectedDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(Calendar.getInstance().time)
+        selectedDate = DateUtils.getCurrentIsoDate()
         dateInput.setText(selectedDate)
 
         dateInput.setOnClickListener {

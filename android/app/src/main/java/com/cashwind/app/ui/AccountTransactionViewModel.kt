@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.AccountEntity
 import com.cashwind.app.database.entity.TransactionEntity
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 class AccountTransactionViewModel(private val db: CashwindDatabase, val accountId: Int) : ViewModel() {
     private val transactionDao = db.transactionDao()
@@ -43,7 +42,7 @@ class AccountTransactionViewModel(private val db: CashwindDatabase, val accountI
                 accountId = accountId,
                 isRecurring = isRecurring,
                 frequency = frequency,
-                createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Calendar.getInstance().time)
+                createdAt = DateUtils.getCurrentTimestamp()
             )
             transactionDao.insertTransaction(transaction)
             updateAccountBalance()

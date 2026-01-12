@@ -12,10 +12,9 @@ import com.cashwind.app.database.entity.GoalEntity
 import com.cashwind.app.database.entity.PaycheckSettingsEntity
 import com.cashwind.app.database.entity.TransactionEntity
 import com.cashwind.app.model.Bill
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
     private val billDao = db.billDao()
@@ -130,8 +129,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
 
     // Past due bills monitoring
     val pastDueBills: LiveData<List<Bill>> = allBills.map { bills ->
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val today = sdf.format(Calendar.getInstance().time)
+        val today = DateUtils.formatIsoDate(Calendar.getInstance().time)
         bills.filter { bill ->
             !bill.isPaid && bill.dueDate < today
         }
@@ -183,8 +181,6 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
     }
 
     private fun calculateUpcomingBills(bills: List<Bill>, frequencyDays: Int): Double {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-
         val today = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 0)
@@ -197,7 +193,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
 
         nextPayDateStr.value?.let { dateStr ->
             try {
-                val parsed = sdf.parse(dateStr)
+                val parsed = DateUtils.parseIsoDate(dateStr)
                 if (parsed != null) {
                     start.time = parsed
                     start.set(Calendar.HOUR_OF_DAY, 0)
@@ -222,7 +218,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
         bills.forEach { bill ->
             if (!bill.isPaid) {
                 try {
-                    val due = sdf.parse(bill.dueDate)
+                    val due = DateUtils.parseIsoDate(bill.dueDate)
                     if (due != null) {
                         val dueDate = Calendar.getInstance().apply { 
                             time = due
@@ -246,7 +242,6 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
     }
 
     private fun calculateMonthlyBillsPerPaycheck(bills: List<Bill>, frequencyDays: Int): Double {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val today = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -268,7 +263,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
         bills.forEach { bill ->
             if (!bill.isPaid) {
                 try {
-                    val due = sdf.parse(bill.dueDate)
+                    val due = DateUtils.parseIsoDate(bill.dueDate)
                     if (due != null) {
                         val dueDate = Calendar.getInstance().apply {
                             time = due
@@ -302,7 +297,6 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
     }
 
     private fun calculateGoalsAllocation(goals: List<GoalEntity>, frequencyDays: Int, nextPayDateStr: String?): Double {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val today = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 0)
@@ -314,7 +308,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
         val start = Calendar.getInstance().apply { time = today.time }
         nextPayDateStr?.let { dateStr ->
             try {
-                val parsed = sdf.parse(dateStr)
+                val parsed = DateUtils.parseIsoDate(dateStr)
                 if (parsed != null) {
                     start.time = parsed
                     start.set(Calendar.HOUR_OF_DAY, 0)
@@ -346,7 +340,7 @@ class PaycheckViewModel(private val db: CashwindDatabase) : ViewModel() {
             } else {
                 // Calculate based on target date
                 try {
-                    val targetDate = sdf.parse(goal.targetDate)
+                    val targetDate = DateUtils.parseIsoDate(goal.targetDate)
                     if (targetDate != null) {
                         val target = Calendar.getInstance().apply {
                             time = targetDate

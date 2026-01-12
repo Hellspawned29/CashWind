@@ -8,10 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.BudgetEntity
 import com.cashwind.app.database.entity.TransactionEntity
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 data class BudgetWithSpent(
     val budget: BudgetEntity,
@@ -57,7 +56,7 @@ class BudgetViewModel(private val db: CashwindDatabase) : ViewModel() {
                 amount = amount,
                 period = period,
                 category = category,
-                createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Calendar.getInstance().time)
+                createdAt = DateUtils.getCurrentTimestamp()
             )
             budgetDao.insertBudget(budget)
         }
@@ -76,7 +75,6 @@ class BudgetViewModel(private val db: CashwindDatabase) : ViewModel() {
     }
 
     private suspend fun calculateSpentForCategory(category: String, period: String): Double {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val now = Calendar.getInstance()
         val startDate = Calendar.getInstance().apply {
             when (period.lowercase()) {

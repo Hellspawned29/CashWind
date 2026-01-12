@@ -9,11 +9,10 @@ import com.cashwind.app.model.AnalyticsSummary
 import com.cashwind.app.model.BudgetPerformance
 import com.cashwind.app.model.MonthlyTrend
 import com.cashwind.app.model.SpendingByCategory
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 class AnalyticsViewModel(private val db: CashwindDatabase) : ViewModel() {
     private val transactionDao = db.transactionDao()
@@ -71,13 +70,11 @@ class AnalyticsViewModel(private val db: CashwindDatabase) : ViewModel() {
 
     private suspend fun calculateMonthlyTrends() {
         val transactions = transactionDao.getAllTransactions(userId).first()
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val monthFormat = SimpleDateFormat("MMM yyyy", Locale.US)
         
         val monthlyData = transactions.groupBy { tx ->
             try {
-                val date = sdf.parse(tx.date)
-                if (date != null) monthFormat.format(date) else "Unknown"
+                val date = DateUtils.parseIsoDate(tx.date)
+                if (date != null) DateUtils.formatMonthYear(date) else "Unknown"
             } catch (e: Exception) {
                 "Unknown"
             }
@@ -140,13 +137,12 @@ class AnalyticsViewModel(private val db: CashwindDatabase) : ViewModel() {
             .mapValues { entry -> entry.value.sumOf { tx -> tx.amount } }
         val largestCategory = categoryExpenses.maxByOrNull { it.value }?.key ?: "None"
         
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val today = Calendar.getInstance()
         val next30Days = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 30) }
         
         val upcomingBills = bills.filter { bill ->
             !bill.isPaid && try {
-                val dueDate = sdf.parse(bill.dueDate)
+                val dueDate = DateUtils.parseIsoDate(bill.dueDate)
                 if (dueDate != null) {
                     val dueCal = Calendar.getInstance().apply { time = dueDate }
                     dueCal.after(today) && dueCal.before(next30Days)

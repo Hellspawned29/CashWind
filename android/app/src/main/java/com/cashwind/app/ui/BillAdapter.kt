@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.databinding.ItemBillBinding
 import com.cashwind.app.model.Bill
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.cashwind.app.util.DateUtils
 
 class BillAdapter(
     private val onTogglePaid: (Bill) -> Unit,
@@ -77,10 +76,8 @@ class BillAdapter(
 
         private fun formatDate(date: String): String {
             return try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
-                val parsedDate = inputFormat.parse(date)
-                parsedDate?.let { outputFormat.format(it) } ?: date
+                val parsedDate = DateUtils.parseIsoDate(date)
+                parsedDate?.let { DateUtils.formatDisplayDate(it) } ?: date
             } catch (e: Exception) {
                 date
             }

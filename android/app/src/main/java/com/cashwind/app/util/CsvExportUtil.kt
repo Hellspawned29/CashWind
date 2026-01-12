@@ -6,8 +6,6 @@ import com.cashwind.app.database.entity.AccountEntity
 import com.cashwind.app.database.entity.BillEntity
 import com.cashwind.app.database.entity.TransactionEntity
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 object CsvExportUtil {
 
@@ -55,7 +53,7 @@ object CsvExportUtil {
         csvBuilder.append("ID,Name,Amount,Category,Due Date,Status,Notes\n")
 
         bills.forEach { bill ->
-            val dueDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(bill.dueDate.toLong()))
+            val dueDate = bill.dueDate // Already in yyyy-MM-dd format
             val status = if (bill.isPaid) "Paid" else "Unpaid"
             val category = bill.category ?: ""
             val notes = bill.notes ?: ""
@@ -81,7 +79,7 @@ object CsvExportUtil {
         csvBuilder.append("ID,Description,Amount,Category,Date,Type\n")
 
         transactions.forEach { transaction ->
-            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(transaction.date.toLong()))
+            val date = transaction.date // Already in yyyy-MM-dd format
             val type = if (transaction.amount > 0) "Income" else "Expense"
             val category = transaction.category ?: ""
             val description = transaction.description ?: ""

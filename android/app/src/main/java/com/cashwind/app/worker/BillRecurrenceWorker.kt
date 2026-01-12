@@ -5,15 +5,14 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.cashwind.app.database.CashwindDatabase
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.first
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class BillRecurrenceWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
-    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         return@withContext try {
@@ -23,13 +22,13 @@ class BillRecurrenceWorker(context: Context, params: WorkerParameters) : Corouti
 
             val bills = billDao.getAllBills(userId).first()
             val now = Calendar.getInstance()
-            val today = sdf.format(now.time)
+            val today = DateUtils.formatIsoDate(now.time)
 
             bills.forEach { billEntity ->
                 // Only process recurring bills that are currently marked as paid
                 if (billEntity.recurring && billEntity.isPaid) {
                     try {
-                        val dueDate = sdf.parse(billEntity.dueDate)
+                        val dueDate = DateUtils.parseIsoDate(billEntity.dueDate)
                         if (dueDate != null) {
                             val dueCal = Calendar.getInstance().apply { time = dueDate }
                             
@@ -42,7 +41,7 @@ class BillRecurrenceWorker(context: Context, params: WorkerParameters) : Corouti
                                 // Reset the bill: mark unpaid and update due date
                                 val updatedBill = billEntity.copy(
                                     isPaid = false,
-                                    dueDate = sdf.format(nextDueDate.time)
+                                    dueDate = DateUtils.formatIsoDate(nextDueDate.time)
                                 )
                                 billDao.updateBill(updatedBill)
                                 Log.d("Cashwind", "Bill ${billEntity.id} reset to unpaid. New due date ${updatedBill.dueDate}")

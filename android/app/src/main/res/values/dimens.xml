@@ -22,6 +22,8 @@
     <dimen name="text_size_heading">20sp</dimen>
     <dimen name="text_size_title">24sp</dimen>
     <dimen name="text_size_large_title">28sp</dimen>
+    <dimen name="text_size_display">36sp</dimen>
+    <dimen name="text_size_huge">48sp</dimen>
 
     <!-- Button Dimensions -->
     <dimen name="button_height_standard">48dp</dimen>

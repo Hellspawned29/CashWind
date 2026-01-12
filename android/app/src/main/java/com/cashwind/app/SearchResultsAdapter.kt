@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.database.entity.AccountEntity
 import com.cashwind.app.database.entity.BillEntity
 import com.cashwind.app.database.entity.TransactionEntity
-import java.text.SimpleDateFormat
-import java.util.*
+import com.cashwind.app.util.DateUtils
 
 class SearchResultsAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -97,7 +96,8 @@ class SearchResultsAdapter :
             billName?.text = bill.name
             billAmount?.text = "$${String.format("%.2f", bill.amount)}"
             billStatus?.text = if (bill.isPaid) "Paid" else "Unpaid"
-            billDueDate?.text = "Due: ${SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(bill.dueDate))}"
+            val dueDateFormatted = DateUtils.parseIsoDate(bill.dueDate)?.let { DateUtils.formatDisplayDate(it) } ?: bill.dueDate
+            billDueDate?.text = "Due: $dueDateFormatted"
         }
     }
 
@@ -121,7 +121,8 @@ class SearchResultsAdapter :
         fun bind(transaction: TransactionEntity) {
             transDescription?.text = transaction.description
             transAmount?.text = "$${String.format("%.2f", transaction.amount)}"
-            transDate?.text = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(transaction.date))
+            val dateFormatted = DateUtils.parseIsoDate(transaction.date)?.let { DateUtils.formatDisplayDate(it) } ?: transaction.date
+            transDate?.text = dateFormatted
         }
     }
 
