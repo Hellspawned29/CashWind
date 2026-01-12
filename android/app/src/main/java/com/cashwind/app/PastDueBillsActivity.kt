@@ -1,20 +1,18 @@
 package com.cashwind.app
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.BillEntity
 import com.cashwind.app.database.entity.BillPaymentAllocationEntity
+import com.cashwind.app.util.DateUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
-class PastDueBillsActivity : Activity() {
+class PastDueBillsActivity : BaseActivity() {
     private lateinit var billsListLayout: LinearLayout
     private lateinit var totalTextView: TextView
     
@@ -42,14 +40,14 @@ class PastDueBillsActivity : Activity() {
         }
         
         val backButton = Button(this).apply {
-            text = "←"
-            textSize = 24f
+            id = R.id.backButton
+            text = "Back"
+            textSize = 14f
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             setPadding(20, 10, 20, 10)
-            setOnClickListener { finish() }
         }
         
         val titleLayout = LinearLayout(this).apply {
@@ -107,9 +105,8 @@ class PastDueBillsActivity : Activity() {
     
     private fun loadOverdueBills() {
         GlobalScope.launch {
-            val db = CashwindDatabase.getInstance(this@PastDueBillsActivity)
-            val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-            val bills = db.billDao().getOverdueBills(today)
+            val today = DateUtils.getCurrentIsoDate()
+            val bills = database.billDao().getOverdueBills(today)
             
             runOnUiThread {
                 billsListLayout.removeAllViews()
@@ -175,8 +172,7 @@ class PastDueBillsActivity : Activity() {
             addView(topRow)
             
             // Due date and days overdue
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            val dueDate = sdf.parse(bill.dueDate)
+            val dueDate = DateUtils.parseIsoDate(bill.dueDate)
             val today = Date()
             val daysOverdue = ((today.time - (dueDate?.time ?: 0)) / (1000 * 60 * 60 * 24)).toInt()
             
@@ -189,9 +185,8 @@ class PastDueBillsActivity : Activity() {
             
             // Show allocation info if any
             GlobalScope.launch {
-                val db = CashwindDatabase.getInstance(this@PastDueBillsActivity)
-                val totalAllocated = db.billPaymentAllocationDao().getTotalAllocatedForBill(bill.id, 1) ?: 0.0
-                val totalPaid = db.billPaymentAllocationDao().getTotalPaidForBill(bill.id, 1) ?: 0.0
+                val totalAllocated = database.billPaymentAllocationDao().getTotalAllocatedForBill(bill.id, 1) ?: 0.0
+                val totalPaid = database.billPaymentAllocationDao().getTotalPaidForBill(bill.id, 1) ?: 0.0
                 
                 if (totalAllocated > 0.0 || totalPaid > 0.0) {
                     runOnUiThread {
@@ -263,8 +258,7 @@ class PastDueBillsActivity : Activity() {
                 
                 setOnClickListener {
                     GlobalScope.launch {
-                        val db = CashwindDatabase.getInstance(this@PastDueBillsActivity)
-                        db.billDao().updateBill(bill.copy(isPaid = true))
+                        database.billDao().updateBill(bill.copy(isPaid = true))
                         loadOverdueBills()
                     }
                 }
@@ -322,17 +316,15 @@ class PastDueBillsActivity : Activity() {
                     val amount = amountText.toDoubleOrNull() ?: 0.0
                     if (amount > 0) {
                         GlobalScope.launch {
-                            val db = CashwindDatabase.getInstance(this@PastDueBillsActivity)
-                            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                             val allocation = BillPaymentAllocationEntity(
                                 billId = bill.id,
                                 userId = 1,
                                 allocatedAmount = amount,
-                                allocationDate = sdf.format(Date()),
+                                allocationDate = DateUtils.getCurrentIsoDate(),
                                 paycheckDate = paycheckDateInput.text.toString().takeIf { it.isNotEmpty() },
                                 notes = "Payment plan allocation"
                             )
-                            db.billPaymentAllocationDao().insertAllocation(allocation)
+                            database.billPaymentAllocationDao().insertAllocation(allocation)
                             runOnUiThread {
                                 Toast.makeText(this@PastDueBillsActivity, "Allocated $${String.format("%.2f", amount)}", Toast.LENGTH_SHORT).show()
                                 loadOverdueBills()
