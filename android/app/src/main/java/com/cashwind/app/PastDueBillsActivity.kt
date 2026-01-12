@@ -235,7 +235,6 @@ class PastDueBillsActivity : BaseActivity() {
                 val allocateParams = layoutParams as LinearLayout.LayoutParams
                 allocateParams.setMargins(0, 0, 8, 0)
                 layoutParams = allocateParams
-                setBackgroundColor(android.graphics.Color.parseColor("#1976D2"))
                 
                 setOnClickListener {
                     showAllocationDialog(bill)
@@ -254,7 +253,6 @@ class PastDueBillsActivity : BaseActivity() {
                     1f
                 )
                 setPadding(20, 10, 20, 10)
-                setBackgroundColor(android.graphics.Color.parseColor("#4CAF50"))
                 
                 setOnClickListener {
                     GlobalScope.launch {
