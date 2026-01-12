@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Standard Padding & Margins -->
+    <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_standard">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_xlarge">32dp</dimen>
+
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_xlarge">32dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_tiny">10sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_body">14sp</dimen>
+    <dimen name="text_size_body_large">16sp</dimen>
+    <dimen name="text_size_subheading">18sp</dimen>
+    <dimen name="text_size_heading">20sp</dimen>
+    <dimen name="text_size_title">24sp</dimen>
+    <dimen name="text_size_large_title">28sp</dimen>
+
+    <!-- Button Dimensions -->
+    <dimen name="button_height_standard">48dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    <dimen name="button_corner_radius">8dp</dimen>
+
+    <!-- Card & Container Dimensions -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="container_corner_radius">8dp</dimen>
+
+    <!-- Icon Sizes -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_standard">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_xlarge">48dp</dimen>
+
+    <!-- List Item Heights -->
+    <dimen name="list_item_height_small">48dp</dimen>
+    <dimen name="list_item_height_standard">56dp</dimen>
+    <dimen name="list_item_height_large">72dp</dimen>
+
+    <!-- Calendar Specific -->
+    <dimen name="calendar_cell_height">100dp</dimen>
+    <dimen name="calendar_cell_padding">8dp</dimen>
+    <dimen name="calendar_min_height">350dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_low">2dp</dimen>
+    <dimen name="elevation_medium">4dp</dimen>
+    <dimen name="elevation_high">8dp</dimen>
+
+    <!-- Stroke/Border Width -->
+    <dimen name="stroke_width_thin">1dp</dimen>
+    <dimen name="stroke_width_standard">2dp</dimen>
+    <dimen name="stroke_width_thick">4dp</dimen>
+</resources>

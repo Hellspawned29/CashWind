@@ -10,21 +10,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cashwind.app.database.CashwindDatabase
 import com.cashwind.app.database.entity.BillEntity
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarActivity : AppCompatActivity() {
+class CalendarActivity : BaseActivity() {
 
-    private lateinit var database: CashwindDatabase
     private lateinit var monthYearTextView: TextView
     private lateinit var calendarTable: TableLayout
     private lateinit var eventsRecyclerView: RecyclerView
     private lateinit var prevButton: Button
     private lateinit var nextButton: Button
-    private lateinit var backButton: Button
 
     private lateinit var eventAdapter: CalendarEventAdapter
 
@@ -34,22 +31,16 @@ class CalendarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
 
-        database = CashwindDatabase.getInstance(this)
-
         monthYearTextView = findViewById(R.id.monthYearTextView)
         calendarTable = findViewById(R.id.calendarTable)
         eventsRecyclerView = findViewById(R.id.eventsRecyclerView)
         prevButton = findViewById(R.id.prevButton)
         nextButton = findViewById(R.id.nextButton)
-        backButton = findViewById(R.id.backButton)
+        // Back button is auto-setup by BaseActivity
 
         eventAdapter = CalendarEventAdapter()
         eventsRecyclerView.layoutManager = LinearLayoutManager(this)
         eventsRecyclerView.adapter = eventAdapter
-
-        backButton.setOnClickListener {
-            finish()
-        }
 
         prevButton.setOnClickListener {
             currentCalendar.add(Calendar.MONTH, -1)
@@ -114,34 +105,38 @@ class CalendarActivity : AppCompatActivity() {
             var dayCounter = 1
             for (r in 0 until rows) {
                 val row = TableRow(this)
+                val cellHeight = resources.getDimensionPixelSize(R.dimen.calendar_cell_height)
                 row.layoutParams = TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
-                    dpToPx(100) // Explicit height
+                    cellHeight
                 )
 
                 for (c in 0..6) {
                     val index = r * 7 + c
                     val tv = TextView(this)
+                    val cellHeight = resources.getDimensionPixelSize(R.dimen.calendar_cell_height)
                     tv.layoutParams = TableRow.LayoutParams(
                         0, 
-                        dpToPx(100), // Explicit height instead of WRAP_CONTENT
+                        cellHeight,
                         1f
                     )
                     tv.gravity = Gravity.CENTER
-                    tv.setPadding(8, 8, 8, 8)
-                    tv.textSize = 18f
+                    val cellPadding = resources.getDimensionPixelSize(R.dimen.calendar_cell_padding)
+                    tv.setPadding(cellPadding, cellPadding, cellPadding, cellPadding)
+                    tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_subheading))
                     tv.setTypeface(null, android.graphics.Typeface.BOLD)
 
                     // Get theme colors
                     val backgroundColor = getColorBackground()
                     val textColor = getTextColorPrimary()
                     val surfaceColor = getSurfaceColor()
+                    val strokeWidth = resources.getDimensionPixelSize(R.dimen.stroke_width_standard)
                     val borderColor = if (isDarkMode()) 0xFF3A3A3A.toInt() else 0xFFCCCCCC.toInt()
                     
                     // Set default background with border
                     val drawable = android.graphics.drawable.GradientDrawable()
                     drawable.setColor(backgroundColor)
-                    drawable.setStroke(2, borderColor)
+                    drawable.setStroke(strokeWidth, borderColor)
                     tv.background = drawable
                     tv.setTextColor(textColor)
 
@@ -151,7 +146,7 @@ class CalendarActivity : AppCompatActivity() {
                         val emptyColor = if (isDarkMode()) 0xFF2C2C2C.toInt() else 0xFFEEEEEE.toInt()
                         val borderColor = if (isDarkMode()) 0xFF3A3A3A.toInt() else 0xFFCCCCCC.toInt()
                         emptyDrawable.setColor(emptyColor)
-                        emptyDrawable.setStroke(2, borderColor)
+                        emptyDrawable.setStroke(strokeWidth, borderColor)
                         tv.background = emptyDrawable
                     } else if (dayCounter <= daysInMonth) {
                         tv.text = dayCounter.toString()
@@ -187,14 +182,14 @@ class CalendarActivity : AppCompatActivity() {
                             val overdueDrawable = android.graphics.drawable.GradientDrawable()
                             val borderColor = if (isDarkMode()) 0xFF3A3A3A.toInt() else 0xFFCCCCCC.toInt()
                             overdueDrawable.setColor(0xFFD32F2F.toInt()) // Red for overdue
-                            overdueDrawable.setStroke(2, borderColor)
+                            overdueDrawable.setStroke(strokeWidth, borderColor)
                             tv.background = overdueDrawable
                             tv.setTextColor(0xFFFFFFFF.toInt()) // White text
                         } else if (dayBills.isNotEmpty()) {
                             val upcomingDrawable = android.graphics.drawable.GradientDrawable()
                             val borderColor = if (isDarkMode()) 0xFF3A3A3A.toInt() else 0xFFCCCCCC.toInt()
                             upcomingDrawable.setColor(0xFF1976D2.toInt()) // Blue for upcoming bills
-                            upcomingDrawable.setStroke(2, borderColor)
+                            upcomingDrawable.setStroke(strokeWidth, borderColor)
                             tv.background = upcomingDrawable
                             tv.setTextColor(0xFFFFFFFF.toInt()) // White text
                         }
@@ -210,7 +205,7 @@ class CalendarActivity : AppCompatActivity() {
                         val emptyColor = if (isDarkMode()) 0xFF2C2C2C.toInt() else 0xFFEEEEEE.toInt()
                         val borderColor = if (isDarkMode()) 0xFF3A3A3A.toInt() else 0xFFCCCCCC.toInt()
                         emptyDrawable.setColor(emptyColor)
-                        emptyDrawable.setStroke(2, borderColor)
+                        emptyDrawable.setStroke(strokeWidth, borderColor)
                         tv.background = emptyDrawable
                     }
 
