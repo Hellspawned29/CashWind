@@ -18,9 +18,11 @@ import com.cashwind.app.worker.BillReminderWorker
 import com.cashwind.app.worker.BillRecurrenceWorker
 import com.cashwind.app.util.DateUtils
 import com.cashwind.app.util.NotificationHelper
-import kotlinx.coroutines.GlobalScope
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -176,32 +178,42 @@ class DashboardActivity : BaseActivity() {
     }
     
     private fun loadBillsData() {
-        GlobalScope.launch {
-            val bills = database.billDao().getAllBills(1).first() // userId = 1
-            
-            val calendar = Calendar.getInstance()
-            val currentMonth = calendar.get(Calendar.MONTH)
-            val currentYear = calendar.get(Calendar.YEAR)
-            val today = DateUtils.getCurrentIsoDate()
-            
-            val monthTotal = bills.filter { bill ->
-                try {
-                    val dueDate = DateUtils.parseIsoDate(bill.dueDate)
-                    if (dueDate != null) {
-                        val dueCal = Calendar.getInstance().apply { time = dueDate }
-                        dueCal.get(Calendar.MONTH) == currentMonth && 
-                        dueCal.get(Calendar.YEAR) == currentYear
-                    } else false
-                } catch (e: Exception) {
-                    false
+        lifecycleScope.launch {
+            try {
+                val bills = withContext(Dispatchers.IO) {
+                    database.billDao().getAllBills(1).first() // userId = 1
                 }
-            }.sumOf { it.amount }
-            
-            val overdueTotal = database.billDao().getOverdueBills(today).sumOf { it.amount }
-            
-            runOnUiThread {
+                
+                val calendar = Calendar.getInstance()
+                val currentMonth = calendar.get(Calendar.MONTH)
+                val currentYear = calendar.get(Calendar.YEAR)
+                val today = DateUtils.getCurrentIsoDate()
+                
+                val monthTotal = bills.filter { bill ->
+                    try {
+                        val dueDate = DateUtils.parseIsoDate(bill.dueDate)
+                        if (dueDate != null) {
+                            val dueCal = Calendar.getInstance().apply { time = dueDate }
+                            dueCal.get(Calendar.MONTH) == currentMonth && 
+                            dueCal.get(Calendar.YEAR) == currentYear
+                        } else false
+                    } catch (e: Exception) {
+                        false
+                    }
+                }.sumOf { it.amount }
+                
+                val overdueBills = withContext(Dispatchers.IO) {
+                    database.billDao().getOverdueBills(today)
+                }
+                val overdueTotal = overdueBills.sumOf { it.amount }
+                
                 updateBillsCard(monthTotal)
                 updatePastDueCard(overdueTotal)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Don't crash - just show zeros
+                updateBillsCard(0.0)
+                updatePastDueCard(0.0)
             }
         }
     }
