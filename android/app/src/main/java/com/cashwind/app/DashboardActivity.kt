@@ -16,8 +16,11 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.cashwind.app.worker.BillReminderWorker
 import com.cashwind.app.worker.BillRecurrenceWorker
+import com.cashwind.app.worker.UpdateCheckWorker
 import com.cashwind.app.util.DateUtils
 import com.cashwind.app.util.NotificationHelper
+import com.cashwind.app.util.UpdateChecker
+import com.cashwind.app.ui.UpdateDialog
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
@@ -186,12 +189,14 @@ class DashboardActivity : BaseActivity() {
         NotificationHelper.createNotificationChannel(this)
         scheduleReminderWorker()
         scheduleRecurrenceWorker()
+        scheduleUpdateCheckWorker()
         if (BuildConfig.DEBUG) {
             scheduleRecurrenceTestWork()
         }
         
-        // Load bills data
+        // Load bills data and check for updates
         loadBillsData()
+        checkForUpdates()
     }
     
     private fun loadBillsData() {
@@ -351,8 +356,44 @@ class DashboardActivity : BaseActivity() {
         )
     }
 
+    private fun scheduleUpdateCheckWorker() {
+        val updateWork = PeriodicWorkRequestBuilder<UpdateCheckWorker>(
+            24, TimeUnit.HOURS // Check for updates once daily
+        ).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "update_check_work",
+            ExistingPeriodicWorkPolicy.KEEP,
+            updateWork
+        )
+    }
+
     private fun scheduleRecurrenceTestWork() {
         val testWork = OneTimeWorkRequestBuilder<BillRecurrenceWorker>().build()
         WorkManager.getInstance(this).enqueue(testWork)
+    }
+
+    private fun checkForUpdates() {
+        lifecycleScope.launch {
+            try {
+                val currentVersion = BuildConfig.VERSION_NAME
+                val updateInfo = withContext(Dispatchers.IO) {
+                    UpdateChecker.checkForUpdates(currentVersion)
+                }
+
+                if (updateInfo != null && updateInfo.isNewer) {
+                    UpdateDialog(this@DashboardActivity, updateInfo) {
+                        UpdateChecker.downloadAndInstallUpdate(
+                            this@DashboardActivity,
+                            updateInfo.downloadUrl,
+                            updateInfo.version
+                        )
+                    }.show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Silently fail - update check is not critical
+            }
+        }
     }
 }

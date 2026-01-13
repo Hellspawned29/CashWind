@@ -112,4 +112,37 @@ object NotificationHelper {
 
         notificationManager.notify(10000 + goalId, notification)
     }
+
+    fun sendUpdateNotification(
+        context: Context,
+        version: String,
+        downloadUrl: String
+    ) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Intent to trigger download when notification is tapped
+        val intent = Intent(context, com.cashwind.app.DashboardActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("check_update", true)
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            20000,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Cashwind Update Available")
+            .setContentText("Version $version is now available!")
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Tap to download and install version $version"))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        notificationManager.notify(20000, notification)
+    }
 }
