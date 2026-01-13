@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -23,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Export Data"
+            android:text="Export/Import Data"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary"
@@ -38,34 +42,59 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose what to export:"
+        android:text="Export Data:"
         android:textSize="14sp"
+        android:textStyle="bold"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="8dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportBillsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Export Bills as CSV"
+        android:text="Export Bills"
         android:backgroundTint="?attr/colorPrimary"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportAccountsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Export Accounts as CSV"
+        android:text="Export Accounts"
         android:backgroundTint="?attr/colorPrimary"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportTransactionsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Export Transactions as CSV"
+        android:text="Export Transactions"
         android:backgroundTint="?attr/colorPrimary"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/exportBudgetsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Export Budgets"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/exportGoalsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Export Goals"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/exportPaycheckButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Export Paycheck Settings"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="8dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportAllButton"
@@ -73,15 +102,72 @@
         android:layout_height="wrap_content"
         android:text="Export All Data"
         android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Data:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importBillsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Bills from CSV"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importAccountsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Accounts from CSV"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importTransactionsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Transactions from CSV"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importBudgetsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Budgets from CSV"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importGoalsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Goals from CSV"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importPaycheckButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import Paycheck Settings from CSV"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="12dp" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="CSV files will be saved to your documents folder and you can share them via email, cloud storage, or other apps."
+        android:layout_height="wrap_content"
+        android:text="Exported files can be shared via email, cloud storage, or other apps. Import will add data from CSV files."
         android:textSize="12sp"
         android:textColor="?attr/colorTextSecondary"
-        android:gravity="bottom" />
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>
+</ScrollView>

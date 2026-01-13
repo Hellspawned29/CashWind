@@ -163,6 +163,23 @@ class DashboardActivity : BaseActivity() {
 
         mainLayout.addView(row4)
         
+        // Row 5: Export/Import
+        val row5 = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            gravity = Gravity.CENTER
+            setPadding(0, 20, 0, 0)
+        }
+
+        row5.addView(createCard("💾", "Export/Import", null) {
+            startActivity(Intent(this, ExportActivity::class.java))
+        })
+
+        mainLayout.addView(row5)
+        
         setContentView(mainLayout)
         
         // Setup notification channel and schedule reminders after UI is ready
