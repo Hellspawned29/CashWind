@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import com.cashwind.app.BuildConfig
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -44,11 +45,18 @@ class DashboardActivity : BaseActivity() {
     }
     
     private fun initializeApp() {
+        val scrollView = ScrollView(this).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.WRAP_CONTENT
             )
             setPadding(40, 60, 40, 40)
             gravity = Gravity.CENTER_HORIZONTAL
@@ -183,7 +191,8 @@ class DashboardActivity : BaseActivity() {
 
         mainLayout.addView(row5)
         
-        setContentView(mainLayout)
+        scrollView.addView(mainLayout)
+        setContentView(scrollView)
         
         // Setup notification channel and schedule reminders after UI is ready
         NotificationHelper.createNotificationChannel(this)
