@@ -53,15 +53,34 @@ class HomeFragment : Fragment() {
             gravity = Gravity.CENTER_VERTICAL
         }
 
-        val title = TextView(requireContext()).apply {
-            text = "Dashboard"
-            setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_display))
+        val titleLayout = LinearLayout(requireContext()).apply {
+            orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 1f
             )
         }
+
+        val title = TextView(requireContext()).apply {
+            text = "Cashwind"
+            setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_display))
+            setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
+        }
+
+        val versionText = TextView(requireContext()).apply {
+            try {
+                val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+                text = "v${packageInfo.versionName}"
+            } catch (e: Exception) {
+                text = "v1.3.0"
+            }
+            setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12f)
+            setTextColor(resources.getColor(android.R.color.darker_gray, null))
+        }
+
+        titleLayout.addView(title)
+        titleLayout.addView(versionText)
 
         val editButton = Button(requireContext()).apply {
             text = "Edit"
@@ -72,7 +91,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        headerLayout.addView(title)
+        headerLayout.addView(titleLayout)
         headerLayout.addView(editButton)
         mainLayout.addView(headerLayout)
 
