@@ -48,60 +48,53 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportBillsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Bills"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportAccountsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Accounts"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportTransactionsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Transactions"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportBudgetsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Budgets"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportGoalsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Goals"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportPaycheckButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export Paycheck Settings"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/exportAllButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Export All Data"
-        android:backgroundTint="?attr/colorPrimary"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -113,52 +106,46 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/importBillsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Import Bills from CSV"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/importAccountsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Import Accounts from CSV"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/importTransactionsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Import Transactions from CSV"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/importBudgetsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Import Budgets from CSV"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/importGoalsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Import Goals from CSV"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/importPaycheckButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Import Paycheck Settings from CSV"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_marginBottom="12dp" />
 
     <TextView

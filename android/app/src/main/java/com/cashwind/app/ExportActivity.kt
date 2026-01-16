@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.first
-import com.google.android.material.button.MaterialButton
 import java.io.File
 
 class ExportActivity : BaseActivity() {
@@ -35,37 +34,37 @@ class ExportActivity : BaseActivity() {
     }
 
     private fun setupExportButtons() {
-        findViewById<MaterialButton>(R.id.exportBillsButton).setOnClickListener { exportBills() }
-        findViewById<MaterialButton>(R.id.exportAccountsButton).setOnClickListener { exportAccounts() }
-        findViewById<MaterialButton>(R.id.exportTransactionsButton).setOnClickListener { exportTransactions() }
-        findViewById<MaterialButton>(R.id.exportBudgetsButton).setOnClickListener { exportBudgets() }
-        findViewById<MaterialButton>(R.id.exportGoalsButton).setOnClickListener { exportGoals() }
-        findViewById<MaterialButton>(R.id.exportPaycheckButton).setOnClickListener { exportPaycheck() }
-        findViewById<MaterialButton>(R.id.exportAllButton).setOnClickListener { exportAll() }
+        findViewById<Button>(R.id.exportBillsButton).setOnClickListener { exportBills() }
+        findViewById<Button>(R.id.exportAccountsButton).setOnClickListener { exportAccounts() }
+        findViewById<Button>(R.id.exportTransactionsButton).setOnClickListener { exportTransactions() }
+        findViewById<Button>(R.id.exportBudgetsButton).setOnClickListener { exportBudgets() }
+        findViewById<Button>(R.id.exportGoalsButton).setOnClickListener { exportGoals() }
+        findViewById<Button>(R.id.exportPaycheckButton).setOnClickListener { exportPaycheck() }
+        findViewById<Button>(R.id.exportAllButton).setOnClickListener { exportAll() }
     }
 
     private fun setupImportButtons() {
-        findViewById<MaterialButton>(R.id.importBillsButton).setOnClickListener { 
+        findViewById<Button>(R.id.importBillsButton).setOnClickListener { 
             currentImportType = ImportType.BILLS
             filePickerLauncher.launch("*/*")
         }
-        findViewById<MaterialButton>(R.id.importAccountsButton).setOnClickListener { 
+        findViewById<Button>(R.id.importAccountsButton).setOnClickListener { 
             currentImportType = ImportType.ACCOUNTS
             filePickerLauncher.launch("*/*")
         }
-        findViewById<MaterialButton>(R.id.importTransactionsButton).setOnClickListener { 
+        findViewById<Button>(R.id.importTransactionsButton).setOnClickListener { 
             currentImportType = ImportType.TRANSACTIONS
             filePickerLauncher.launch("*/*")
         }
-        findViewById<MaterialButton>(R.id.importBudgetsButton).setOnClickListener { 
+        findViewById<Button>(R.id.importBudgetsButton).setOnClickListener { 
             currentImportType = ImportType.BUDGETS
             filePickerLauncher.launch("*/*")
         }
-        findViewById<MaterialButton>(R.id.importGoalsButton).setOnClickListener { 
+        findViewById<Button>(R.id.importGoalsButton).setOnClickListener { 
             currentImportType = ImportType.GOALS
             filePickerLauncher.launch("*/*")
         }
-        findViewById<MaterialButton>(R.id.importPaycheckButton).setOnClickListener { 
+        findViewById<Button>(R.id.importPaycheckButton).setOnClickListener { 
             currentImportType = ImportType.PAYCHECK
             filePickerLauncher.launch("*/*")
         }
