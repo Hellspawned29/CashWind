@@ -15,6 +15,7 @@
         <activity
             android:name="com.cashwind.app.DashboardActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Cashwind">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
