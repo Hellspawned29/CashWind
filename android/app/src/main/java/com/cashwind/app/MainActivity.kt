@@ -132,9 +132,8 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this, AddBillActivity::class.java))
         }
 
-        // Back button - navigate to DashboardActivity
+        // Back button - return to previous activity
         binding.backButton.setOnClickListener {
-            startActivity(Intent(this, DashboardActivity::class.java))
             finish()
         }
     }

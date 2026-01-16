@@ -90,7 +90,6 @@ class AccountsActivity : BaseActivity() {
         }
 
         binding.backButton.setOnClickListener {
-            startActivity(Intent(this, DashboardActivity::class.java))
             finish()
         }
     }
