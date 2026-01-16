@@ -119,7 +119,6 @@ class HomeFragment : Fragment() {
             onCardClick = { card ->
                 card.activityClass?.let { activityClass ->
                     val intent = android.content.Intent(requireContext(), activityClass)
-                    intent.flags = android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                 }
             }

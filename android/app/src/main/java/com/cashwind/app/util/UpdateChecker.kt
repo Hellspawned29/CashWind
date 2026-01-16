@@ -113,34 +113,40 @@ object UpdateChecker {
     }
 
     private fun installApk(context: Context, downloadManager: DownloadManager, downloadId: Long) {
-        val uri = downloadManager.getUriForDownloadedFile(downloadId)
-        
-        if (uri == null) {
-            // Fallback: try to get the file path
-            val query = DownloadManager.Query().setFilterById(downloadId)
-            val cursor = downloadManager.query(query)
-            if (cursor.moveToFirst()) {
-                val columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
-                val fileUri = cursor.getString(columnIndex)
-                cursor.close()
-                
-                if (fileUri != null) {
-                    val installIntent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(Uri.parse(fileUri), "application/vnd.android.package-archive")
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+        try {
+            // For Android 8.0+, check if we can install unknown apps
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!context.packageManager.canRequestPackageInstalls()) {
+                    // Open settings to allow installing unknown apps
+                    val intent = Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
+                        data = Uri.parse("package:${context.packageName}")
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     }
-                    context.startActivity(installIntent)
+                    context.startActivity(intent)
+                    return
                 }
             }
-            return
-        }
-        
-        val installIntent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(uri, "application/vnd.android.package-archive")
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        }
+            
+            val uri = downloadManager.getUriForDownloadedFile(downloadId)
+            
+            val installIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // For Android 7.0+, use content:// URI
+                Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(uri, "application/vnd.android.package-archive")
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+            } else {
+                // For older versions
+                Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(uri, "application/vnd.android.package-archive")
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+            }
 
-        context.startActivity(installIntent)
+            context.startActivity(installIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
