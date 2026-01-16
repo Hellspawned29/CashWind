@@ -61,15 +61,21 @@ class DashboardActivity : BaseActivity() {
                         true
                     }
                     R.id.nav_bills -> {
-                        startActivity(Intent(this@DashboardActivity, MainActivity::class.java))
+                        val intent = Intent(this@DashboardActivity, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
                         false
                     }
                     R.id.nav_accounts -> {
-                        startActivity(Intent(this@DashboardActivity, AccountsActivity::class.java))
+                        val intent = Intent(this@DashboardActivity, AccountsActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
                         false
                     }
                     R.id.nav_analytics -> {
-                        startActivity(Intent(this@DashboardActivity, AnalyticsActivity::class.java))
+                        val intent = Intent(this@DashboardActivity, AnalyticsActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
                         false
                     }
                     R.id.nav_more -> {

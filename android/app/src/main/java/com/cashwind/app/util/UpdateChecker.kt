@@ -115,9 +115,30 @@ object UpdateChecker {
     private fun installApk(context: Context, downloadManager: DownloadManager, downloadId: Long) {
         val uri = downloadManager.getUriForDownloadedFile(downloadId)
         
+        if (uri == null) {
+            // Fallback: try to get the file path
+            val query = DownloadManager.Query().setFilterById(downloadId)
+            val cursor = downloadManager.query(query)
+            if (cursor.moveToFirst()) {
+                val columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
+                val fileUri = cursor.getString(columnIndex)
+                cursor.close()
+                
+                if (fileUri != null) {
+                    val installIntent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(Uri.parse(fileUri), "application/vnd.android.package-archive")
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+                    context.startActivity(installIntent)
+                }
+            }
+            return
+        }
+        
         val installIntent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(uri, "application/vnd.android.package-archive")
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
 
         context.startActivity(installIntent)
