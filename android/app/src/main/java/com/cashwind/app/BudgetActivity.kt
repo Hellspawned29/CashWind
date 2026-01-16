@@ -51,7 +51,15 @@ class BudgetActivity : BaseActivity() {
             val intent = Intent(this, AddBudgetActivity::class.java)
             startActivity(intent)
         }
-        backButton.setOnClickListener { finish() }
+        backButton.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+        finish()
     }
 }
 

@@ -1,5 +1,6 @@
 package com.cashwind.app
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -97,8 +98,16 @@ class AnalyticsActivity : BaseActivity() {
             }
         }
         
-        backButton.setOnClickListener { finish() }
+        backButton.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         refreshButton.setOnClickListener { viewModel.loadAnalytics() }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+        finish()
     }
     
     private fun formatCurrency(value: Double): String = "$${String.format("%.2f", value)}"
