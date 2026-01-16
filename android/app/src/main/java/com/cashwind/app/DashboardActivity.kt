@@ -3,9 +3,7 @@
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.cashwind.app.fragments.HomeFragment
-import com.cashwind.app.fragments.MoreFragment
 import android.widget.FrameLayout
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -43,46 +41,11 @@ class DashboardActivity : BaseActivity() {
             fragmentContainerId = id
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                0,
-                1f
+                ViewGroup.LayoutParams.MATCH_PARENT
             )
-        }
-        
-        val bottomNav = BottomNavigationView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            inflateMenu(R.menu.bottom_navigation)
-            setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.nav_home -> {
-                        loadFragment(HomeFragment())
-                        true
-                    }
-                    R.id.nav_bills -> {
-                        startActivity(Intent(this@DashboardActivity, MainActivity::class.java))
-                        false
-                    }
-                    R.id.nav_accounts -> {
-                        startActivity(Intent(this@DashboardActivity, AccountsActivity::class.java))
-                        false
-                    }
-                    R.id.nav_analytics -> {
-                        startActivity(Intent(this@DashboardActivity, AnalyticsActivity::class.java))
-                        false
-                    }
-                    R.id.nav_more -> {
-                        loadFragment(MoreFragment())
-                        true
-                    }
-                    else -> false
-                }
-            }
         }
         
         mainLayout.addView(fragmentContainer)
-        mainLayout.addView(bottomNav)
         setContentView(mainLayout)
         
         if (savedInstanceState == null) {
