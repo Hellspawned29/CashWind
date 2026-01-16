@@ -115,6 +115,12 @@ class HomeFragment : Fragment() {
                 DashboardCardManager.moveCard(requireContext(), cardId, newLocation)
                 adapter.removeCard(cardId)
                 refreshFragment()
+            },
+            onCardClick = { card ->
+                card.activityClass?.let { activityClass ->
+                    val intent = android.content.Intent(requireContext(), activityClass)
+                    startActivity(intent)
+                }
             }
         )
         recyclerView.adapter = adapter

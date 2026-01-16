@@ -17,6 +17,7 @@ class DashboardCardAdapter(
     private val cards: MutableList<DashboardCard>,
     private val onCardOrderChanged: (List<DashboardCard>) -> Unit,
     private val onMoveCard: ((String, String) -> Unit)? = null,
+    private val onCardClick: ((DashboardCard) -> Unit)? = null,
     private var isEditMode: Boolean = false
 ) : RecyclerView.Adapter<DashboardCardAdapter.CardViewHolder>() {
 
@@ -120,9 +121,7 @@ class DashboardCardAdapter(
             isFocusable = card.activityClass != null && !isEditMode
             setOnClickListener {
                 if (!isEditMode) {
-                    card.activityClass?.let { activityClass ->
-                        context.startActivity(Intent(context, activityClass))
-                    }
+                    onCardClick?.invoke(card)
                 }
             }
         }
