@@ -24,12 +24,21 @@ class MainActivity : BaseActivity() {
     private lateinit var billAdapter: BillAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        try {
+            android.util.Log.d("MainActivity", "onCreate started")
+            super.onCreate(savedInstanceState)
+            android.util.Log.d("MainActivity", "super.onCreate completed")
+            
+            android.util.Log.d("MainActivity", "Inflating binding...")
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            android.util.Log.d("MainActivity", "Binding inflated successfully")
+            
+            android.util.Log.d("MainActivity", "Setting content view...")
+            setContentView(binding.root)
+            android.util.Log.d("MainActivity", "Content view set successfully")
 
-        // Setup RecyclerView
-        billAdapter = BillAdapter(
+            // Setup RecyclerView
+            billAdapter = BillAdapter(
             onTogglePaid = { bill -> viewModel.togglePaid(bill) },
             onDelete = { bill -> viewModel.deleteBill(bill) },
             onDetail = { bill ->
@@ -135,6 +144,20 @@ class MainActivity : BaseActivity() {
         // Back button - return to previous activity
         binding.backButton.setOnClickListener {
             finish()
+        }
+            
+            android.util.Log.d("MainActivity", "onCreate completed successfully")
+        } catch (e: Exception) {
+            android.util.Log.e("MainActivity", "CRASH in onCreate: ${e.javaClass.simpleName}: ${e.message}", e)
+            e.printStackTrace()
+            
+            // Show error dialog to user
+            android.app.AlertDialog.Builder(this)
+                .setTitle("Error Loading Bills")
+                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\nStack: ${e.stackTraceToString().take(500)}")
+                .setPositiveButton("OK") { _, _ -> finish() }
+                .setCancelable(false)
+                .show()
         }
     }
 
