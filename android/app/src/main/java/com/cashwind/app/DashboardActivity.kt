@@ -123,4 +123,10 @@ class DashboardActivity : BaseActivity() {
             }
         }
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        // When back is pressed on dashboard, minimize app instead of finishing
+        moveTaskToBack(true)
+    }
 }
