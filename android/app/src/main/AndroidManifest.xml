@@ -15,7 +15,6 @@
         <activity
             android:name="com.cashwind.app.DashboardActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:theme="@style/Theme.Cashwind">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +24,6 @@
         <activity
             android:name="com.cashwind.app.MainActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.BillDetailActivity"
@@ -42,7 +40,6 @@
         <activity
             android:name="com.cashwind.app.AccountsActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.AddAccountActivity"
@@ -51,7 +48,6 @@
         <activity
             android:name="com.cashwind.app.PaycheckActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.AccountTransactionActivity"
@@ -68,7 +64,6 @@
         <activity
             android:name="com.cashwind.app.BudgetActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.AddBudgetActivity"
@@ -77,7 +72,6 @@
         <activity
             android:name="com.cashwind.app.GoalsActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.AddGoalActivity"
@@ -86,22 +80,18 @@
         <activity
             android:name="com.cashwind.app.AnalyticsActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.CalendarActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.PastDueBillsActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.cashwind.app.ExportActivity"
             android:theme="@style/Theme.Cashwind"
-            android:parentActivityName="com.cashwind.app.DashboardActivity"
             android:exported="false" />
     </application>
 

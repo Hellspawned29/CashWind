@@ -90,16 +90,8 @@ class AccountsActivity : BaseActivity() {
         }
 
         binding.backButton.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            finish()
         }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        val intent = Intent(this, DashboardActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        startActivity(intent)
-        finish()
     }
 
     private fun applyFilter() {
