@@ -7,13 +7,15 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cashwind.app.databinding.ActivityAccountsBinding
+import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.ui.AccountsViewModel
 import com.cashwind.app.ui.AccountAdapter
 import com.cashwind.app.model.Account
+import android.widget.Spinner
+import android.widget.TextView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AccountsActivity : BaseActivity() {
-    private lateinit var binding: ActivityAccountsBinding
     private val viewModel: AccountsViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
@@ -27,8 +29,14 @@ class AccountsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAccountsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_accounts)
+
+        val accountsRecycler = findViewById<RecyclerView>(R.id.accountsRecycler)
+        val totalBalance = findViewById<TextView>(R.id.totalBalance)
+        val typeSpinner = findViewById<Spinner>(R.id.typeSpinner)
+        val addAccountButton = findViewById<FloatingActionButton>(R.id.addAccountButton)
+        val backButton = findViewById<View>(R.id.backButton)
+        val emptyText = findViewById<TextView>(R.id.emptyText)
 
         adapter = AccountAdapter(
             onClick = { account ->
@@ -55,7 +63,7 @@ class AccountsActivity : BaseActivity() {
             onDelete = { account -> viewModel.deleteAccount(account) }
         )
 
-        binding.accountsRecycler.apply {
+        accountsRecycler.apply {
             layoutManager = LinearLayoutManager(this@AccountsActivity)
             adapter = this@AccountsActivity.adapter
         }
@@ -66,7 +74,7 @@ class AccountsActivity : BaseActivity() {
         }
 
         viewModel.totalBalance.observe(this) { total ->
-            binding.totalBalance.text = formatCurrency(total)
+            totalBalance.text = formatCurrency(total)
         }
 
         ArrayAdapter.createFromResource(
@@ -75,30 +83,32 @@ class AccountsActivity : BaseActivity() {
             android.R.layout.simple_spinner_item
         ).also { arr ->
             arr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.typeSpinner.adapter = arr
+            typeSpinner.adapter = arr
         }
 
-        binding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 applyFilter()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        binding.addAccountButton.setOnClickListener {
+        addAccountButton.setOnClickListener {
             startActivity(Intent(this, AddAccountActivity::class.java))
         }
 
-        binding.backButton.setOnClickListener {
+        backButton.setOnClickListener {
             finish()
         }
     }
 
     private fun applyFilter() {
-        val selected = binding.typeSpinner.selectedItem?.toString() ?: "All"
+        val typeSpinner = findViewById<Spinner>(R.id.typeSpinner)
+        val emptyText = findViewById<TextView>(R.id.emptyText)
+        val selected = typeSpinner.selectedItem?.toString() ?: "All"
         val filtered = if (selected == "All") currentAccounts else currentAccounts.filter { it.type.equals(selected, true) }
         adapter.submitList(filtered)
-        binding.emptyText.visibility = if (filtered.isEmpty()) View.VISIBLE else View.GONE
+        emptyText.visibility = if (filtered.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun formatCurrency(v: Double): String = "$${String.format("%.2f", v)}"
