@@ -57,6 +57,27 @@ class DashboardActivity : BaseActivity() {
         }
         mainLayout.addView(testButton)
         
+        // TEST BUTTON 2 - Launch TestActivity (no XML layout)
+        val testButton2 = android.widget.Button(this).apply {
+            text = "TEST 2: Open TestActivity (No XML)"
+            setOnClickListener {
+                android.util.Log.d("DashboardActivity", "Test button 2 clicked - launching TestActivity")
+                try {
+                    val intent = Intent(this@DashboardActivity, TestActivity::class.java)
+                    startActivity(intent)
+                    android.util.Log.d("DashboardActivity", "TestActivity launched successfully")
+                } catch (e: Exception) {
+                    android.util.Log.e("DashboardActivity", "Failed to launch TestActivity: ${e.message}", e)
+                    android.widget.Toast.makeText(this@DashboardActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                }
+            }
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        mainLayout.addView(testButton2)
+        
         val fragmentContainer = FrameLayout(this).apply {
             id = View.generateViewId()
             fragmentContainerId = id
