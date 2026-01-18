@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cashwind.app.databinding.ActivityMainBinding
+import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.ui.MainViewModel
 import com.cashwind.app.ui.BillAdapter
 
 class MainActivity : BaseActivity() {
-    private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
@@ -24,36 +26,13 @@ class MainActivity : BaseActivity() {
     private lateinit var billAdapter: BillAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        android.util.Log.d("MainActivity", "onCreate started - BYPASS VIEWBINDING TEST")
         super.onCreate(savedInstanceState)
-        android.util.Log.d("MainActivity", "super.onCreate completed")
-        
-        // TEMPORARILY BYPASS VIEWBINDING - Use setContentView directly
-        try {
-            android.util.Log.d("MainActivity", "Setting content view from XML...")
-            setContentView(R.layout.activity_main)
-            android.util.Log.d("MainActivity", "SUCCESS! XML layout inflated without ViewBinding")
-            
-            // Show success message
-            android.widget.Toast.makeText(this, "MainActivity loaded WITHOUT ViewBinding!", android.widget.Toast.LENGTH_LONG).show()
-            
-        } catch (e: Exception) {
-            android.util.Log.e("MainActivity", "CRASH during setContentView: ${e.javaClass.simpleName}: ${e.message}", e)
-            
-            android.app.AlertDialog.Builder(this)
-                .setTitle("XML Inflation Error")
-                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\n${e.stackTraceToString().take(800)}")
-                .setPositiveButton("OK") { _, _ -> finish() }
-                .show()
-            return
-        }
-        
-        // Old code commented out for testing
-        /*
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
         // Setup RecyclerView
+        val billsRecyclerView = findViewById<RecyclerView>(R.id.billsRecyclerView)
+        val emptyText = findViewById<TextView>(R.id.emptyText)
+        
         billAdapter = BillAdapter(
             onTogglePaid = { bill -> viewModel.togglePaid(bill) },
             onDelete = { bill -> viewModel.deleteBill(bill) },
@@ -77,7 +56,7 @@ class MainActivity : BaseActivity() {
                 startActivity(intent)
             }
         )
-        binding.billsRecyclerView.apply {
+        billsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = billAdapter
         }
@@ -88,35 +67,47 @@ class MainActivity : BaseActivity() {
         // Observe sorted bills
         viewModel.sortedBills.observe(this) { bills ->
             billAdapter.submitList(bills)
-            binding.emptyText.visibility = if (bills.isEmpty()) View.VISIBLE else View.GONE
+            emptyText.visibility = if (bills.isEmpty()) View.VISIBLE else View.GONE
         }
 
         // Observe totals
+        val totalCount = findViewById<TextView>(R.id.totalCount)
+        val paidCount = findViewById<TextView>(R.id.paidCount)
+        val unpaidCount = findViewById<TextView>(R.id.unpaidCount)
+        val dueWeekCount = findViewById<TextView>(R.id.dueWeekCount)
+        val dueMonthCount = findViewById<TextView>(R.id.dueMonthCount)
+        val totalAmount = findViewById<TextView>(R.id.totalAmount)
+        val paidAmount = findViewById<TextView>(R.id.paidAmount)
+        val unpaidAmount = findViewById<TextView>(R.id.unpaidAmount)
+        val dueWeekAmount = findViewById<TextView>(R.id.dueWeekAmount)
+        val dueMonthAmount = findViewById<TextView>(R.id.dueMonthAmount)
+        
         viewModel.totals.observe(this) { totals ->
-            binding.totalCount.text = totals.total.toString()
-            binding.paidCount.text = totals.paid.toString()
-            binding.unpaidCount.text = totals.unpaid.toString()
-            binding.dueWeekCount.text = totals.dueThisWeek.toString()
-            binding.dueMonthCount.text = totals.dueThisMonth.toString()
+            totalCount.text = totals.total.toString()
+            paidCount.text = totals.paid.toString()
+            unpaidCount.text = totals.unpaid.toString()
+            dueWeekCount.text = totals.dueThisWeek.toString()
+            dueMonthCount.text = totals.dueThisMonth.toString()
 
-            binding.totalAmount.text = formatCurrency(totals.totalAmount)
-            binding.paidAmount.text = formatCurrency(totals.paidAmount)
-            binding.unpaidAmount.text = formatCurrency(totals.unpaidAmount)
-            binding.dueWeekAmount.text = formatCurrency(totals.dueThisWeekAmount)
-            binding.dueMonthAmount.text = formatCurrency(totals.dueThisMonthAmount)
+            totalAmount.text = formatCurrency(totals.totalAmount)
+            paidAmount.text = formatCurrency(totals.paidAmount)
+            unpaidAmount.text = formatCurrency(totals.unpaidAmount)
+            dueWeekAmount.text = formatCurrency(totals.dueThisWeekAmount)
+            dueMonthAmount.text = formatCurrency(totals.dueThisMonthAmount)
         }
 
         // Sort spinner
+        val sortSpinner = findViewById<Spinner>(R.id.sortSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.sort_options,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.sortSpinner.adapter = adapter
+            sortSpinner.adapter = adapter
         }
 
-        binding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val option = when (position) {
                     1 -> MainViewModel.SortOption.AMOUNT_DESC
@@ -130,16 +121,17 @@ class MainActivity : BaseActivity() {
         }
 
         // Status filter spinner
+        val statusSpinner = findViewById<Spinner>(R.id.statusSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.status_filters,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.statusSpinner.adapter = adapter
+            statusSpinner.adapter = adapter
         }
 
-        binding.statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val filter = when (position) {
                     1 -> MainViewModel.StatusFilter.PAID
@@ -152,30 +144,15 @@ class MainActivity : BaseActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Add bill button - navigate to AddBillActivity
-        binding.addBillButton.setOnClickListener {
+        // Add bill button
+        findViewById<Button>(R.id.addBillButton).setOnClickListener {
             startActivity(Intent(this, AddBillActivity::class.java))
         }
 
-        // Back button - return to previous activity
-        binding.backButton.setOnClickListener {
+        // Back button
+        findViewById<Button>(R.id.backButton).setOnClickListener {
             finish()
         }
-            
-            android.util.Log.d("MainActivity", "onCreate completed successfully")
-        } catch (e: Exception) {
-            android.util.Log.e("MainActivity", "CRASH in onCreate: ${e.javaClass.simpleName}: ${e.message}", e)
-            e.printStackTrace()
-            
-            // Show error dialog to user
-            android.app.AlertDialog.Builder(this)
-                .setTitle("Error Loading Bills")
-                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\nStack: ${e.stackTraceToString().take(500)}")
-                .setPositiveButton("OK") { _, _ -> finish() }
-                .setCancelable(false)
-                .show()
-        }
-        */
     }
 
     private fun formatCurrency(value: Double): String = "$${String.format("%.2f", value)}"
