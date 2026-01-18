@@ -36,12 +36,34 @@ class DashboardActivity : BaseActivity() {
             )
         }
         
+        // TEST BUTTON - Launch MainActivity directly from Activity (not fragment)
+        val testButton = android.widget.Button(this).apply {
+            text = "TEST: Open Bills (Direct)"
+            setOnClickListener {
+                android.util.Log.d("DashboardActivity", "Test button clicked - launching MainActivity")
+                try {
+                    val intent = Intent(this@DashboardActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    android.util.Log.d("DashboardActivity", "MainActivity launched successfully")
+                } catch (e: Exception) {
+                    android.util.Log.e("DashboardActivity", "Failed to launch MainActivity: ${e.message}", e)
+                    android.widget.Toast.makeText(this@DashboardActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                }
+            }
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        mainLayout.addView(testButton)
+        
         val fragmentContainer = FrameLayout(this).apply {
             id = View.generateViewId()
             fragmentContainerId = id
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                0,
+                1f
             )
         }
         
