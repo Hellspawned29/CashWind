@@ -120,8 +120,13 @@ class DashboardCardAdapter(
             isClickable = card.activityClass != null && !isEditMode
             isFocusable = card.activityClass != null && !isEditMode
             setOnClickListener {
-                if (!isEditMode) {
-                    onCardClick?.invoke(card)
+                if (!isEditMode && card.activityClass != null) {
+                    try {
+                        android.util.Log.d("DashboardCard", "Card clicked: ${card.title}, class: ${card.activityClass}")
+                        onCardClick?.invoke(card)
+                    } catch (e: Exception) {
+                        android.util.Log.e("DashboardCard", "Error invoking click: ${e.message}", e)
+                    }
                 }
             }
         }

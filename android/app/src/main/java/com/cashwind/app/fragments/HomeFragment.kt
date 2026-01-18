@@ -118,14 +118,27 @@ class HomeFragment : Fragment() {
             },
             onCardClick = { card ->
                 try {
+                    android.util.Log.d("HomeFragment", "onCardClick called for: ${card.title}")
+                    val currentActivity = activity
+                    if (currentActivity == null) {
+                        android.util.Log.e("HomeFragment", "Activity is null!")
+                        android.widget.Toast.makeText(context, "Error: Activity is null", android.widget.Toast.LENGTH_LONG).show()
+                        return@DashboardCardAdapter
+                    }
+                    
                     card.activityClass?.let { activityClass ->
-                        val activity = activity ?: return@let
-                        val intent = android.content.Intent(activity, activityClass)
-                        activity.startActivity(intent)
+                        android.util.Log.d("HomeFragment", "Starting activity: ${activityClass.simpleName}")
+                        val intent = android.content.Intent(currentActivity, activityClass)
+                        currentActivity.startActivity(intent)
+                        android.util.Log.d("HomeFragment", "Activity started successfully")
+                    } ?: run {
+                        android.util.Log.e("HomeFragment", "activityClass is null for card: ${card.title}")
+                        android.widget.Toast.makeText(context, "Error: No activity for ${card.title}", android.widget.Toast.LENGTH_LONG).show()
                     }
                 } catch (e: Exception) {
+                    android.util.Log.e("HomeFragment", "Exception in onCardClick: ${e.message}", e)
                     e.printStackTrace()
-                    android.widget.Toast.makeText(context, "Error opening: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+                    android.widget.Toast.makeText(context, "Error: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
                 }
             }
         )
