@@ -117,9 +117,15 @@ class HomeFragment : Fragment() {
                 refreshFragment()
             },
             onCardClick = { card ->
-                card.activityClass?.let { activityClass ->
-                    val intent = android.content.Intent(requireActivity(), activityClass)
-                    requireActivity().startActivity(intent)
+                try {
+                    card.activityClass?.let { activityClass ->
+                        val activity = activity ?: return@let
+                        val intent = android.content.Intent(activity, activityClass)
+                        activity.startActivity(intent)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    android.widget.Toast.makeText(context, "Error opening: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
                 }
             }
         )
