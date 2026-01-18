@@ -19,8 +19,26 @@ abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var database: CashwindDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        database = CashwindDatabase.getInstance(this)
+        try {
+            android.util.Log.d("BaseActivity", "onCreate started for ${this.javaClass.simpleName}")
+            super.onCreate(savedInstanceState)
+            android.util.Log.d("BaseActivity", "super.onCreate completed")
+            
+            android.util.Log.d("BaseActivity", "Initializing database...")
+            database = CashwindDatabase.getInstance(this)
+            android.util.Log.d("BaseActivity", "Database initialized successfully")
+        } catch (e: Exception) {
+            android.util.Log.e("BaseActivity", "CRASH in BaseActivity.onCreate: ${e.javaClass.simpleName}: ${e.message}", e)
+            
+            // Show error and finish
+            android.app.AlertDialog.Builder(this)
+                .setTitle("App Initialization Error")
+                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\n${e.stackTraceToString().take(800)}")
+                .setPositiveButton("Close") { _, _ -> finishAffinity() }
+                .setCancelable(false)
+                .show()
+            throw e // Re-throw to prevent further execution
+        }
     }
 
     /**
