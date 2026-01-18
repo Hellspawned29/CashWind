@@ -24,21 +24,37 @@ class MainActivity : BaseActivity() {
     private lateinit var billAdapter: BillAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        android.util.Log.d("MainActivity", "onCreate started - BYPASS VIEWBINDING TEST")
+        super.onCreate(savedInstanceState)
+        android.util.Log.d("MainActivity", "super.onCreate completed")
+        
+        // TEMPORARILY BYPASS VIEWBINDING - Use setContentView directly
         try {
-            android.util.Log.d("MainActivity", "onCreate started")
-            super.onCreate(savedInstanceState)
-            android.util.Log.d("MainActivity", "super.onCreate completed")
+            android.util.Log.d("MainActivity", "Setting content view from XML...")
+            setContentView(R.layout.activity_main)
+            android.util.Log.d("MainActivity", "SUCCESS! XML layout inflated without ViewBinding")
             
-            android.util.Log.d("MainActivity", "Inflating binding...")
-            binding = ActivityMainBinding.inflate(layoutInflater)
-            android.util.Log.d("MainActivity", "Binding inflated successfully")
+            // Show success message
+            android.widget.Toast.makeText(this, "MainActivity loaded WITHOUT ViewBinding!", android.widget.Toast.LENGTH_LONG).show()
             
-            android.util.Log.d("MainActivity", "Setting content view...")
-            setContentView(binding.root)
-            android.util.Log.d("MainActivity", "Content view set successfully")
+        } catch (e: Exception) {
+            android.util.Log.e("MainActivity", "CRASH during setContentView: ${e.javaClass.simpleName}: ${e.message}", e)
+            
+            android.app.AlertDialog.Builder(this)
+                .setTitle("XML Inflation Error")
+                .setMessage("${e.javaClass.simpleName}: ${e.message}\n\n${e.stackTraceToString().take(800)}")
+                .setPositiveButton("OK") { _, _ -> finish() }
+                .show()
+            return
+        }
+        
+        // Old code commented out for testing
+        /*
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-            // Setup RecyclerView
-            billAdapter = BillAdapter(
+        // Setup RecyclerView
+        billAdapter = BillAdapter(
             onTogglePaid = { bill -> viewModel.togglePaid(bill) },
             onDelete = { bill -> viewModel.deleteBill(bill) },
             onDetail = { bill ->
@@ -159,6 +175,7 @@ class MainActivity : BaseActivity() {
                 .setCancelable(false)
                 .show()
         }
+        */
     }
 
     private fun formatCurrency(value: Double): String = "$${String.format("%.2f", value)}"
