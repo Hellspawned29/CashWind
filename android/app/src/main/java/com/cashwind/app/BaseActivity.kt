@@ -38,12 +38,16 @@ abstract class BaseActivity : AppCompatActivity() {
      * Supports both Button and MaterialButton with R.id.backButton.
      */
     private fun autoWireBackButton() {
-        // Try MaterialButton first (it's a subclass of Button)
-        val backButton = findViewById<MaterialButton>(R.id.backButton)
-            ?: findViewById<Button>(R.id.backButton)
-        
-        backButton?.setOnClickListener {
-            finish()
+        try {
+            // Try MaterialButton first (it's a subclass of Button)
+            val backButton = findViewById<MaterialButton>(R.id.backButton)
+                ?: findViewById<Button>(R.id.backButton)
+            
+            backButton?.setOnClickListener {
+                finish()
+            }
+        } catch (e: Exception) {
+            // Silently ignore - not all activities have a back button
         }
     }
 
