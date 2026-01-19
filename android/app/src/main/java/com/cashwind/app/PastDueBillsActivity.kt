@@ -105,14 +105,17 @@ class PastDueBillsActivity : BaseActivity() {
     }
     
     private fun loadOverdueBills() {
-        GlobalScope.launch {
-            val today = DateUtils.getCurrentIsoDate()
-            val bills = database.billDao().getOverdueBills(today)
+        android.util.Log.d("PastDueBillsActivity", "loadOverdueBills called")
+        try {
+            GlobalScope.launch {
+                try {
+                    val today = DateUtils.getCurrentIsoDate()
+                    val bills = database.billDao().getOverdueBills(today)
             
-            runOnUiThread {
-                billsListLayout.removeAllViews()
+                    runOnUiThread {
+                        billsListLayout.removeAllViews()
                 
-                if (bills.isEmpty()) {
+                        if (bills.isEmpty()) {
                     billsListLayout.addView(TextView(this@PastDueBillsActivity).apply {
                         text = "No past due bills"
                         textSize = 18f
@@ -128,7 +131,18 @@ class PastDueBillsActivity : BaseActivity() {
                         billsListLayout.addView(createBillItem(bill))
                     }
                 }
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("PastDueBillsActivity", "ERROR in coroutine", e)
+                    runOnUiThread {
+                        Toast.makeText(this@PastDueBillsActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                        finish()
+                    }
+                }
             }
+        } catch (e: Exception) {
+            android.util.Log.e("PastDueBillsActivity", "ERROR launching coroutine", e)
+            Toast.makeText(this, "Failed to load: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
     
