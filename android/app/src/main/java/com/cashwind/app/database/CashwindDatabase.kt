@@ -103,8 +103,12 @@ abstract class CashwindDatabase : RoomDatabase() {
         // Migration from version 8 to 9 - adds webLink to bills
         private val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Add webLink column to bills table
-                database.execSQL("ALTER TABLE bills ADD COLUMN webLink TEXT")
+                // Add webLink column to bills table (handle case where it already exists)
+                try {
+                    database.execSQL("ALTER TABLE bills ADD COLUMN webLink TEXT")
+                } catch (e: Exception) {
+                    // Column already exists, ignore
+                }
             }
         }
 
