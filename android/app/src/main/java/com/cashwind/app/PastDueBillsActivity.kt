@@ -1,5 +1,6 @@
 package com.cashwind.app
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -11,6 +12,9 @@ import com.cashwind.app.util.DateUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 
 class PastDueBillsActivity : BaseActivity() {
@@ -133,16 +137,53 @@ class PastDueBillsActivity : BaseActivity() {
                 }
                     }
                 } catch (e: Exception) {
+                    val stackTrace = StringWriter()
+                    e.printStackTrace(PrintWriter(stackTrace))
+                    val fullError = "Error: ${e.message}\n\nFull stack trace:\n$stackTrace"
+                    
                     android.util.Log.e("PastDueBillsActivity", "ERROR in coroutine", e)
+                    
+                    // Write to file
+                    try {
+                        val errorFile = File(getExternalFilesDir(null), "cashwind_error.txt")
+                        errorFile.writeText(fullError)
+                        android.util.Log.e("PastDueBillsActivity", "Error written to: ${errorFile.absolutePath}")
+                    } catch (fileError: Exception) {
+                        android.util.Log.e("PastDueBillsActivity", "Failed to write error file", fileError)
+                    }
+                    
                     runOnUiThread {
-                        Toast.makeText(this@PastDueBillsActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                        finish()
+                        AlertDialog.Builder(this@PastDueBillsActivity)
+                            .setTitle("Error Loading Bills")
+                            .setMessage(fullError)
+                            .setPositiveButton("OK") { _, _ -> finish() }
+                            .setCancelable(false)
+                            .show()
                     }
                 }
             }
         } catch (e: Exception) {
+            val stackTrace = StringWriter()
+            e.printStackTrace(PrintWriter(stackTrace))
+            val fullError = "Error: ${e.message}\n\nFull stack trace:\n$stackTrace"
+            
             android.util.Log.e("PastDueBillsActivity", "ERROR launching coroutine", e)
-            Toast.makeText(this, "Failed to load: ${e.message}", Toast.LENGTH_LONG).show()
+            
+            // Write to file
+            try {
+                val errorFile = File(getExternalFilesDir(null), "cashwind_error.txt")
+                errorFile.writeText(fullError)
+                android.util.Log.e("PastDueBillsActivity", "Error written to: ${errorFile.absolutePath}")
+            } catch (fileError: Exception) {
+                android.util.Log.e("PastDueBillsActivity", "Failed to write error file", fileError)
+            }
+            
+            AlertDialog.Builder(this)
+                .setTitle("Error Loading Bills")
+                .setMessage(fullError)
+                .setPositiveButton("OK") { _, _ -> finish() }
+                .setCancelable(false)
+                .show()
         }
     }
     
