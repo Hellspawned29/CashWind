@@ -28,8 +28,12 @@ class MainActivity : BaseActivity() {
     private lateinit var billAdapter: BillAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        try {
+            android.util.Log.d("MainActivity", "=== ENTERING onCreate ===")
+            super.onCreate(savedInstanceState)
+            android.util.Log.d("MainActivity", "super.onCreate completed")
+            setContentView(R.layout.activity_main)
+            android.util.Log.d("MainActivity", "setContentView completed")
 
         // Setup RecyclerView
         val billsRecyclerView = findViewById<RecyclerView>(R.id.billsRecyclerView)
@@ -154,6 +158,16 @@ class MainActivity : BaseActivity() {
         // Back button
         findViewById<Button>(R.id.backButton).setOnClickListener {
             finish()
+        }
+            
+            android.util.Log.d("MainActivity", "=== onCreate COMPLETED SUCCESSFULLY ===")
+        } catch (e: Exception) {
+            android.util.Log.e("MainActivity", "!!! CRASH in MainActivity.onCreate !!!", e)
+            android.app.AlertDialog.Builder(this)
+                .setTitle("MainActivity Crash")
+                .setMessage("Error: ${e.message}\n\nStack: ${e.stackTraceToString().take(500)}")
+                .setPositiveButton("OK") { _, _ -> finish() }
+                .show()
         }
     }
 

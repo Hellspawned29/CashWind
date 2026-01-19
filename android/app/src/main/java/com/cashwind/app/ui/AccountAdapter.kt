@@ -1,12 +1,14 @@
 package com.cashwind.app.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.cashwind.app.databinding.ItemAccountBinding
+import com.cashwind.app.R
 import com.cashwind.app.model.Account
 
 class AccountAdapter(
@@ -16,19 +18,24 @@ class AccountAdapter(
 ) : ListAdapter<Account, AccountAdapter.AccountViewHolder>(AccountDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
-        val binding = ItemAccountBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AccountViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_account, parent, false)
+        return AccountViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
         holder.bind(getItem(position), onClick, onTransactions, onDelete)
     }
 
-    class AccountViewHolder(private val binding: ItemAccountBinding) : RecyclerView.ViewHolder(binding.root) {
+    class AccountViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val accountName: TextView = itemView.findViewById(R.id.accountName)
+        private val accountType: TextView = itemView.findViewById(R.id.accountType)
+        private val accountBalance: TextView = itemView.findViewById(R.id.accountBalance)
+        private val accountMeta: TextView = itemView.findViewById(R.id.accountMeta)
+        
         fun bind(account: Account, onClick: (Account) -> Unit, onTransactions: (Account) -> Unit, onDelete: (Account) -> Unit) {
-            binding.accountName.text = account.name
-            binding.accountType.text = account.accountType ?: account.type
-            binding.accountBalance.text = formatCurrency(account.balance)
+            accountName.text = account.name
+            accountType.text = account.accountType ?: account.type
+            accountBalance.text = formatCurrency(account.balance)
 
             val creditInfo = buildString {
                 if (account.creditLimit != null) append("Limit: ${formatCurrency(account.creditLimit)}  ")
@@ -36,13 +43,13 @@ class AccountAdapter(
                 if (account.minimumPayment != null) append("Min: ${formatCurrency(account.minimumPayment)}  ")
                 if (account.dueDay != null) append("Due: ${account.dueDay}")
             }.trim()
-            binding.accountMeta.text = if (creditInfo.isEmpty()) "" else creditInfo
+            accountMeta.text = if (creditInfo.isEmpty()) "" else creditInfo
 
             // Click to view transactions
-            binding.root.setOnClickListener { onTransactions(account) }
+            itemView.setOnClickListener { onTransactions(account) }
             // Long press to delete
-            binding.root.setOnLongClickListener {
-                AlertDialog.Builder(binding.root.context)
+            itemView.setOnLongClickListener {
+                AlertDialog.Builder(itemView.context)
                     .setTitle("Delete Account")
                     .setMessage("Delete \"${account.name}\"? This cannot be undone.")
                     .setPositiveButton("Delete") { _, _ -> onDelete(account) }
@@ -51,7 +58,7 @@ class AccountAdapter(
                 true
             }
             // Double tap to edit (alternative: make a button)
-            binding.accountName.setOnClickListener { onClick(account) }
+            accountName.setOnClickListener { onClick(account) }
         }
 
         private fun formatCurrency(value: Double): String = "$${String.format("%.2f", value)}"

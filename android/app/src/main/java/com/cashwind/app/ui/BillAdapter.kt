@@ -1,12 +1,14 @@
 package com.cashwind.app.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.cashwind.app.databinding.ItemBillBinding
+import com.cashwind.app.R
 import com.cashwind.app.model.Bill
 import com.cashwind.app.util.DateUtils
 
@@ -17,22 +19,28 @@ class BillAdapter(
 ) : ListAdapter<Bill, BillAdapter.BillViewHolder>(BillDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillViewHolder {
-        val binding = ItemBillBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BillViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_bill, parent, false)
+        return BillViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: BillViewHolder, position: Int) {
         holder.bind(getItem(position), onTogglePaid, onDelete, onDetail)
     }
 
-    class BillViewHolder(private val binding: ItemBillBinding) : RecyclerView.ViewHolder(binding.root) {
+    class BillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val billName: TextView = itemView.findViewById(R.id.billName)
+        private val billAmount: TextView = itemView.findViewById(R.id.billAmount)
+        private val billDueDate: TextView = itemView.findViewById(R.id.billDueDate)
+        private val billCategory: TextView = itemView.findViewById(R.id.billCategory)
+        private val billStatus: TextView = itemView.findViewById(R.id.billStatus)
+        
         fun bind(
             bill: Bill,
             onTogglePaid: (Bill) -> Unit,
             onDelete: (Bill) -> Unit,
             onDetail: (Bill) -> Unit
         ) {
-            binding.billName.text = bill.name
+            billName.text = bill.name
             
             // Display amount with past due indicator if applicable
             val amountText = if (bill.hasPastDue && bill.pastDueAmount > 0.0) {
@@ -40,26 +48,26 @@ class BillAdapter(
             } else {
                 "$${String.format("%.2f", bill.amount)}"
             }
-            binding.billAmount.text = amountText
+            billAmount.text = amountText
             
-            binding.billDueDate.text = "Due: ${formatDate(bill.dueDate)}"
-            binding.billCategory.text = bill.category ?: "General"
-            binding.billStatus.text = if (bill.isPaid) "Paid" else "Unpaid"
-            binding.billStatus.setTextColor(
-                binding.root.context.resources.getColor(
+            billDueDate.text = "Due: ${formatDate(bill.dueDate)}"
+            billCategory.text = bill.category ?: "General"
+            billStatus.text = if (bill.isPaid) "Paid" else "Unpaid"
+            billStatus.setTextColor(
+                itemView.context.resources.getColor(
                     if (bill.isPaid) android.R.color.holo_green_dark else android.R.color.holo_red_dark,
                     null
                 )
             )
 
             // Toggle paid/unpaid on status click
-            binding.billStatus.setOnClickListener {
+            billStatus.setOnClickListener {
                 onTogglePaid(bill)
             }
 
             // Long press to delete
-            binding.root.setOnLongClickListener {
-                AlertDialog.Builder(binding.root.context)
+            itemView.setOnLongClickListener {
+                AlertDialog.Builder(itemView.context)
                     .setTitle("Delete Bill")
                     .setMessage("Delete \"${bill.name}\"? This cannot be undone.")
                     .setPositiveButton("Delete") { _, _ -> onDelete(bill) }
@@ -69,7 +77,7 @@ class BillAdapter(
             }
 
             // Tap row to open detail
-            binding.root.setOnClickListener {
+            itemView.setOnClickListener {
                 onDetail(bill)
             }
         }

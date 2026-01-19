@@ -16,7 +16,8 @@ import com.google.android.material.button.MaterialButton
  */
 abstract class BaseActivity : AppCompatActivity() {
 
-    protected lateinit var database: CashwindDatabase
+    protected val database: CashwindDatabase
+        get() = CashwindApplication.database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -24,9 +25,8 @@ abstract class BaseActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             android.util.Log.d("BaseActivity", "super.onCreate completed")
             
-            android.util.Log.d("BaseActivity", "Initializing database...")
-            database = CashwindDatabase.getInstance(this)
-            android.util.Log.d("BaseActivity", "Database initialized successfully")
+            // Database already initialized in Application.onCreate()
+            android.util.Log.d("BaseActivity", "Database ready from Application")
         } catch (e: Exception) {
             android.util.Log.e("BaseActivity", "CRASH in BaseActivity.onCreate: ${e.javaClass.simpleName}: ${e.message}", e)
             
