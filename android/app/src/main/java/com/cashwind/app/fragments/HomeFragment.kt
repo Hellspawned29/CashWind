@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Button
 import android.view.Gravity
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,11 +36,18 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val scrollView = ScrollView(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+        
         val mainLayout = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.WRAP_CONTENT
             )
             setPadding(20, 60, 20, 40)
         }
@@ -98,16 +106,18 @@ class HomeFragment : Fragment() {
         val recyclerView = RecyclerView(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply {
                 setMargins(0, 40, 0, 0)
             }
             layoutManager = GridLayoutManager(requireContext(), 2)
+            isNestedScrollingEnabled = false
         }
 
-        val cards = DashboardCardManager.getCards(requireContext(), "home")
+        // Get ALL cards (both home and more locations)
+        val allAvailableCards = DashboardCardManager.getAllCards(requireContext())
 
-        adapter = DashboardCardAdapter(cards, 
+        adapter = DashboardCardAdapter(allAvailableCards, 
             onCardOrderChanged = { updatedCards ->
                 DashboardCardManager.saveCardOrder(requireContext(), updatedCards)
             },
@@ -140,10 +150,11 @@ class HomeFragment : Fragment() {
         touchHelper.attachToRecyclerView(recyclerView)
 
         mainLayout.addView(recyclerView)
+        scrollView.addView(mainLayout)
 
         loadDashboardData()
 
-        return mainLayout
+        return scrollView
     }
 
     private fun refreshFragment() {

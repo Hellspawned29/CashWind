@@ -59,6 +59,28 @@ object DashboardCardManager {
         
         return orderedCards
     }
+    
+    fun getAllCards(context: Context): MutableList<DashboardCard> {
+        val savedOrder = getSavedOrder(context)
+        
+        // Apply saved order to all cards
+        val orderedCards = mutableListOf<DashboardCard>()
+        if (savedOrder.isNotEmpty()) {
+            savedOrder.forEach { cardId ->
+                allCards.find { it.id == cardId }?.let { orderedCards.add(it) }
+            }
+            // Add any new cards not in saved order
+            allCards.forEach { card ->
+                if (!orderedCards.any { it.id == card.id }) {
+                    orderedCards.add(card)
+                }
+            }
+        } else {
+            orderedCards.addAll(allCards)
+        }
+        
+        return orderedCards
+    }
 
     fun saveCardOrder(context: Context, cards: List<DashboardCard>) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
