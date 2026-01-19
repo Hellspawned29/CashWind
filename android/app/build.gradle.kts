@@ -21,8 +21,8 @@ android {
         applicationId = "com.cashwind.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 46
-        versionName = "1.7.7"
+        versionCode = 47
+        versionName = "1.7.8"
     }
 
     buildTypes {

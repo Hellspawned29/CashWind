@@ -3,6 +3,7 @@ package com.cashwind.app
 import android.app.Application
 import android.util.Log
 import com.cashwind.app.database.CashwindDatabase
+import com.cashwind.app.util.ErrorLogger
 
 class CashwindApplication : Application() {
     
@@ -26,6 +27,7 @@ class CashwindApplication : Application() {
             
         } catch (e: Exception) {
             Log.e("CashwindApplication", "❌ FATAL: Database init failed", e)
+            ErrorLogger.logError(this, "CashwindApplication", "FATAL: Database initialization failed", e)
             throw e
         }
     }
