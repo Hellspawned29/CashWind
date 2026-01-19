@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.ui.AccountsViewModel
@@ -16,13 +15,16 @@ import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AccountsActivity : BaseActivity() {
-    private val viewModel: AccountsViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return AccountsViewModel(database) as T
+    private val viewModel: AccountsViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return AccountsViewModel(database) as T
+                }
             }
-        }
+        )[AccountsViewModel::class.java]
     }
     private lateinit var adapter: AccountAdapter
     private var currentAccounts: List<Account> = emptyList()

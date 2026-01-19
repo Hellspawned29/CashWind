@@ -22,6 +22,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.cashwind.app.SimpleTestActivity"
+            android:theme="@style/Theme.Cashwind"
+            android:exported="false" />
+        <activity
             android:name="com.cashwind.app.TestActivity"
             android:theme="@style/Theme.Cashwind"
             android:exported="false" />

@@ -7,20 +7,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.database.entity.GoalEntity
 import com.cashwind.app.ui.GoalsViewModel
 
 class GoalsActivity : BaseActivity() {
-    private val viewModel: GoalsViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return GoalsViewModel(database) as T
+    private val viewModel: GoalsViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return GoalsViewModel(database) as T
+                }
             }
-        }
+        )[GoalsViewModel::class.java]
     }
 
     private lateinit var goalsListView: ListView

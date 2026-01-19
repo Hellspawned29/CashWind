@@ -6,17 +6,19 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.viewModels
 import com.cashwind.app.ui.AnalyticsViewModel
 
 class AnalyticsActivity : BaseActivity() {
-    private val viewModel: AnalyticsViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return AnalyticsViewModel(database) as T
+    private val viewModel: AnalyticsViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return AnalyticsViewModel(database) as T
+                }
             }
-        }
+        )[AnalyticsViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

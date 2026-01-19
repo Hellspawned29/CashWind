@@ -6,18 +6,20 @@ import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.cashwind.app.ui.BudgetViewModel
 
 class BudgetActivity : BaseActivity() {
-    private val viewModel: BudgetViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return BudgetViewModel(database) as T
+    private val viewModel: BudgetViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return BudgetViewModel(database) as T
+                }
             }
-        }
+        )[BudgetViewModel::class.java]
     }
 
     private lateinit var budgetListView: ListView

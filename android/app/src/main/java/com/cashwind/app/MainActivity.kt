@@ -8,20 +8,22 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashwind.app.ui.MainViewModel
 import com.cashwind.app.ui.BillAdapter
 
 class MainActivity : BaseActivity() {
-    private val viewModel: MainViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return MainViewModel(database) as T
+    private val viewModel: MainViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return MainViewModel(database) as T
+                }
             }
-        }
+        )[MainViewModel::class.java]
     }
     private lateinit var billAdapter: BillAdapter
 
