@@ -145,10 +145,10 @@ abstract class CashwindDatabase : RoomDatabase() {
             }
         }
 
-        // Migration from version 10 to 11 - fix hasPastDue and pastDueAmount to be NOT NULL
+        // Migration from version 10 to 11 - fix hasPastDue and pastDueAmount to be NOT NULL, create bill_payment_allocations
         private val MIGRATION_10_11 = object : Migration(10, 11) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Create new table with correct schema
+                // Create new bills table with correct schema
                 database.execSQL("""
                     CREATE TABLE bills_new (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -186,6 +186,22 @@ abstract class CashwindDatabase : RoomDatabase() {
                 
                 // Rename new table to bills
                 database.execSQL("ALTER TABLE bills_new RENAME TO bills")
+                
+                // Create bill_payment_allocations table if it doesn't exist
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS bill_payment_allocations (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        billId INTEGER NOT NULL,
+                        userId INTEGER NOT NULL,
+                        allocatedAmount REAL NOT NULL,
+                        paidAmount REAL NOT NULL,
+                        allocationDate TEXT NOT NULL,
+                        paycheckDate TEXT,
+                        notes TEXT,
+                        createdAt INTEGER NOT NULL,
+                        updatedAt INTEGER NOT NULL
+                    )
+                """.trimIndent())
             }
         }
 
