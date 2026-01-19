@@ -3,7 +3,6 @@ package com.cashwind.app
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddBillBinding
 import com.cashwind.app.ui.AddBillViewModel
@@ -13,13 +12,16 @@ import java.util.Calendar
 
 class AddBillActivity : BaseActivity() {
     private lateinit var binding: ActivityAddBillBinding
-    private val viewModel: AddBillViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return AddBillViewModel(database) as T
+    private val viewModel: AddBillViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return AddBillViewModel(database) as T
+                }
             }
-        }
+        )[AddBillViewModel::class.java]
     }
     private var editingBillId: Int = 0
     private var existingIsPaid: Boolean = false

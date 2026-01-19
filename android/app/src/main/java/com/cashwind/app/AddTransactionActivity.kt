@@ -3,21 +3,23 @@ package com.cashwind.app
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.*
-import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.ui.AccountTransactionViewModel
 import com.cashwind.app.util.DateUtils
 import java.util.Calendar
 
 class AddTransactionActivity : BaseActivity() {
-    private val viewModel: AccountTransactionViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                val accountId = intent.getIntExtra("accountId", -1)
-                return AccountTransactionViewModel(database, accountId) as T
+    private val viewModel: AccountTransactionViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    val accountId = intent.getIntExtra("accountId", -1)
+                    return AccountTransactionViewModel(database, accountId) as T
+                }
             }
-        }
+        )[AccountTransactionViewModel::class.java]
     }
 
     private lateinit var typeSpinner: Spinner

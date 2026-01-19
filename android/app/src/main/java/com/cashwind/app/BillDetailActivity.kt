@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.Spinner
-import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityBillDetailBinding
 import com.cashwind.app.ui.BillDetailViewModel
@@ -17,13 +16,16 @@ import kotlinx.coroutines.launch
 
 class BillDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityBillDetailBinding
-    private val viewModel: BillDetailViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return BillDetailViewModel(database) as T
+    private val viewModel: BillDetailViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return BillDetailViewModel(database) as T
+                }
             }
-        }
+        )[BillDetailViewModel::class.java]
     }
 
     private lateinit var bill: Bill

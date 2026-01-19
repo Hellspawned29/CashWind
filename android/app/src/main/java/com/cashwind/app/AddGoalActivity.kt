@@ -1,7 +1,6 @@
 package com.cashwind.app
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddGoalBinding
 import com.cashwind.app.ui.GoalsViewModel
@@ -10,13 +9,16 @@ import java.util.*
 
 class AddGoalActivity : BaseActivity() {
     private lateinit var binding: ActivityAddGoalBinding
-    private val viewModel: GoalsViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return GoalsViewModel(database) as T
+    private val viewModel: GoalsViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return GoalsViewModel(database) as T
+                }
             }
-        }
+        )[GoalsViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

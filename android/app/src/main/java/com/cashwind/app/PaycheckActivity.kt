@@ -3,17 +3,19 @@ package com.cashwind.app
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import com.cashwind.app.ui.PaycheckViewModel
 
 class PaycheckActivity : BaseActivity() {
-    private val viewModel: PaycheckViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return PaycheckViewModel(database) as T
+    private val viewModel: PaycheckViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return PaycheckViewModel(database) as T
+                }
             }
-        }
+        )[PaycheckViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

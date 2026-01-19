@@ -2,7 +2,6 @@ package com.cashwind.app
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.cashwind.app.databinding.ActivityLoginBinding
 import com.cashwind.app.ui.AuthViewModel
@@ -13,13 +12,16 @@ import com.cashwind.app.network.RetrofitProvider
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val authRepository by lazy { AuthRepository(TokenManager(this)) }
-    private val viewModel: AuthViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(authRepository) as T
+    private val viewModel: AuthViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return AuthViewModel(authRepository) as T
+                }
             }
-        }
+        )[AuthViewModel::class.java]
     }
 
     private var isLoginMode = true

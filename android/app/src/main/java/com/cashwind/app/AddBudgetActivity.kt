@@ -2,20 +2,22 @@ package com.cashwind.app
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.databinding.ActivityAddBudgetBinding
 import com.cashwind.app.ui.BudgetViewModel
 
 class AddBudgetActivity : BaseActivity() {
     private lateinit var binding: ActivityAddBudgetBinding
-    private val viewModel: BudgetViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return BudgetViewModel(database) as T
+    private val viewModel: BudgetViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return BudgetViewModel(database) as T
+                }
             }
-        }
+        )[BudgetViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

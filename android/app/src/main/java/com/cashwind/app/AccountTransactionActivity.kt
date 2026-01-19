@@ -9,7 +9,6 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.cashwind.app.database.entity.TransactionEntity
@@ -18,14 +17,17 @@ import com.cashwind.app.util.DateUtils
 import java.util.Calendar
 
 class AccountTransactionActivity : BaseActivity() {
-    private val viewModel: AccountTransactionViewModel by viewModels {
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                val accountId = intent.getIntExtra("accountId", -1)
-                return AccountTransactionViewModel(database, accountId) as T
+    private val viewModel: AccountTransactionViewModel by lazy {
+        androidx.lifecycle.ViewModelProvider(
+            this,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    val accountId = intent.getIntExtra("accountId", -1)
+                    return AccountTransactionViewModel(database, accountId) as T
+                }
             }
-        }
+        )[AccountTransactionViewModel::class.java]
     }
 
     private lateinit var transactionListView: ListView
