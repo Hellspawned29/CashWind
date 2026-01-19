@@ -29,7 +29,6 @@ import java.util.Date
 
 class HomeFragment : Fragment() {
     private lateinit var adapter: DashboardCardAdapter
-    private var isEditMode = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,15 +60,6 @@ class HomeFragment : Fragment() {
             gravity = Gravity.CENTER_VERTICAL
         }
 
-        val titleLayout = LinearLayout(requireContext()).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1f
-            )
-        }
-
         val title = TextView(requireContext()).apply {
             text = "Cashwind"
             setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_display))
@@ -81,26 +71,15 @@ class HomeFragment : Fragment() {
                 val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
                 text = "v${packageInfo.versionName}"
             } catch (e: Exception) {
-                text = "v1.3.0"
+                text = "v1.8.0"
             }
             setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12f)
             setTextColor(resources.getColor(android.R.color.darker_gray, null))
+            setPadding(16, 0, 0, 0)
         }
 
-        titleLayout.addView(title)
-        titleLayout.addView(versionText)
-
-        val editButton = Button(requireContext()).apply {
-            text = "Edit"
-            setOnClickListener {
-                isEditMode = !isEditMode
-                text = if (isEditMode) "Done" else "Edit"
-                adapter.setEditMode(isEditMode)
-            }
-        }
-
-        headerLayout.addView(titleLayout)
-        headerLayout.addView(editButton)
+        headerLayout.addView(title)
+        headerLayout.addView(versionText)
         mainLayout.addView(headerLayout)
 
         val recyclerView = RecyclerView(requireContext()).apply {
