@@ -142,12 +142,15 @@ class PastDueBillsActivity : BaseActivity() {
                     val fullError = "Error: ${e.message}\n\nFull stack trace:\n$stackTrace"
                     
                     android.util.Log.e("PastDueBillsActivity", "ERROR in coroutine", e)
+                    android.util.Log.e("PastDueBillsActivity", "Full error: $fullError")
                     
                     // Write to file
+                    var errorPath = "unknown"
                     try {
                         val errorFile = File(getExternalFilesDir(null), "cashwind_error.txt")
                         errorFile.writeText(fullError)
-                        android.util.Log.e("PastDueBillsActivity", "Error written to: ${errorFile.absolutePath}")
+                        errorPath = errorFile.absolutePath
+                        android.util.Log.e("PastDueBillsActivity", "Error written to: $errorPath")
                     } catch (fileError: Exception) {
                         android.util.Log.e("PastDueBillsActivity", "Failed to write error file", fileError)
                     }
@@ -155,7 +158,7 @@ class PastDueBillsActivity : BaseActivity() {
                     runOnUiThread {
                         AlertDialog.Builder(this@PastDueBillsActivity)
                             .setTitle("Error Loading Bills")
-                            .setMessage(fullError)
+                            .setMessage("${e.message}\n\nFull error saved to:\n$errorPath")
                             .setPositiveButton("OK") { _, _ -> finish() }
                             .setCancelable(false)
                             .show()
@@ -168,19 +171,22 @@ class PastDueBillsActivity : BaseActivity() {
             val fullError = "Error: ${e.message}\n\nFull stack trace:\n$stackTrace"
             
             android.util.Log.e("PastDueBillsActivity", "ERROR launching coroutine", e)
+            android.util.Log.e("PastDueBillsActivity", "Full error: $fullError")
             
             // Write to file
+            var errorPath = "unknown"
             try {
                 val errorFile = File(getExternalFilesDir(null), "cashwind_error.txt")
                 errorFile.writeText(fullError)
-                android.util.Log.e("PastDueBillsActivity", "Error written to: ${errorFile.absolutePath}")
+                errorPath = errorFile.absolutePath
+                android.util.Log.e("PastDueBillsActivity", "Error written to: $errorPath")
             } catch (fileError: Exception) {
                 android.util.Log.e("PastDueBillsActivity", "Failed to write error file", fileError)
             }
             
             AlertDialog.Builder(this)
                 .setTitle("Error Loading Bills")
-                .setMessage(fullError)
+                .setMessage("${e.message}\n\nFull error saved to:\n$errorPath")
                 .setPositiveButton("OK") { _, _ -> finish() }
                 .setCancelable(false)
                 .show()
