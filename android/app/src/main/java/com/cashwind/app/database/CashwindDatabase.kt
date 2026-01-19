@@ -21,7 +21,7 @@ import com.cashwind.app.database.dao.*
         BillReminderEntity::class,
         BillPaymentAllocationEntity::class
     ],
-    version = 10
+    version = 11
 )
 abstract class CashwindDatabase : RoomDatabase() {
     abstract fun billDao(): BillDao
@@ -125,9 +125,67 @@ abstract class CashwindDatabase : RoomDatabase() {
         // Migration from version 9 to 10 - adds hasPastDue and pastDueAmount to bills
         private val MIGRATION_9_10 = object : Migration(9, 10) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Add hasPastDue and pastDueAmount columns to bills table
-                database.execSQL("ALTER TABLE bills ADD COLUMN hasPastDue INTEGER DEFAULT 0")
-                database.execSQL("ALTER TABLE bills ADD COLUMN pastDueAmount REAL DEFAULT 0.0")
+                // Check if columns already exist
+                val cursor = database.query("PRAGMA table_info(bills)")
+                val existingColumns = mutableSetOf<String>()
+                while (cursor.moveToNext()) {
+                    existingColumns.add(cursor.getString(cursor.getColumnIndex("name")))
+                }
+                cursor.close()
+                
+                // Add hasPastDue column if it doesn't exist (NOT NULL with default)
+                if (!existingColumns.contains("hasPastDue")) {
+                    database.execSQL("ALTER TABLE bills ADD COLUMN hasPastDue INTEGER NOT NULL DEFAULT 0")
+                }
+                
+                // Add pastDueAmount column if it doesn't exist (NOT NULL with default)
+                if (!existingColumns.contains("pastDueAmount")) {
+                    database.execSQL("ALTER TABLE bills ADD COLUMN pastDueAmount REAL NOT NULL DEFAULT 0.0")
+                }
+            }
+        }
+
+        // Migration from version 10 to 11 - fix hasPastDue and pastDueAmount to be NOT NULL
+        private val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create new table with correct schema
+                database.execSQL("""
+                    CREATE TABLE bills_new (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        userId INTEGER NOT NULL,
+                        name TEXT NOT NULL,
+                        amount REAL NOT NULL,
+                        dueDate TEXT NOT NULL,
+                        isPaid INTEGER NOT NULL,
+                        lastPaidAt TEXT,
+                        category TEXT,
+                        recurring INTEGER NOT NULL,
+                        frequency TEXT,
+                        notes TEXT,
+                        webLink TEXT,
+                        accountId INTEGER,
+                        linkedTransactionId INTEGER,
+                        hasPastDue INTEGER NOT NULL DEFAULT 0,
+                        pastDueAmount REAL NOT NULL DEFAULT 0.0,
+                        createdAt TEXT,
+                        syncedAt INTEGER NOT NULL
+                    )
+                """.trimIndent())
+                
+                // Copy data from old table to new table
+                database.execSQL("""
+                    INSERT INTO bills_new 
+                    SELECT id, userId, name, amount, dueDate, isPaid, lastPaidAt, category, 
+                           recurring, frequency, notes, webLink, accountId, linkedTransactionId,
+                           COALESCE(hasPastDue, 0), COALESCE(pastDueAmount, 0.0), createdAt, syncedAt
+                    FROM bills
+                """.trimIndent())
+                
+                // Drop old table
+                database.execSQL("DROP TABLE bills")
+                
+                // Rename new table to bills
+                database.execSQL("ALTER TABLE bills_new RENAME TO bills")
             }
         }
 
@@ -140,7 +198,7 @@ abstract class CashwindDatabase : RoomDatabase() {
                 )
                     .addMigrations(
                         MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6,
-                        MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10
+                        MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11
                     )
                     .build()
                     .also { instance = it }
